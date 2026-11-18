@@ -1,0 +1,9 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+FredAPI = "d9bedd26-f847-4972-b871-e049ba70493b"
+
+[compat]
+Documenter = "1"
+
+[sources]
+FredAPI = {path = ".."}
