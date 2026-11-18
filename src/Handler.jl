@@ -535,6 +535,265 @@ function process_vintage_dates_response_dataframe(model::Type{T}, response::Stri
     return dataframe
 end
 
+"""
+    process_release_tables_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
+
+Process the JSON response string from the `fred/release/tables` endpoint of the FRED API.
+We parse the response string, select seven fields from each element of the release table, and return them as a `DataFrame`.
+FRED sends the elements as a dictionary keyed by element id. We visit the elements in the order of the response.
+FRED sends `element_id`, `parent_id`, and `level` as numbers in some records and as text in others. We convert each one to an `Int64`.
+
+### Arguments
+- `model::Type{T}`: the endpoint model type. Must be a subtype of `AbstractFredEndpointModel`.
+- `response::String`: the JSON response string from the `fred/release/tables` endpoint.
+
+### Returns
+- `DataFrame`: a table with one row for each element, in the order of the response. The columns are:
+    - `element_id::Int64`: the id of the element.
+    - `parent_id::Union{Missing,Int64}`: the id of the parent element, or `missing` when FRED sends none.
+    - `series_id::Union{Missing,String}`: the id of the series of the element, or `missing` when FRED sends none.
+    - `type::String`: the type of the element, e.g., `"series"`.
+    - `name::String`: the name of the element.
+    - `line::Union{Missing,String}`: the line number of the element in the table, as text, or `missing` when FRED sends none.
+    - `level::Int64`: the depth of the element in the table.
+
+  If the response holds no elements, the table is empty.
+
+### Throws
+- The JSON parser throws an error when `response` is not valid JSON. A `KeyError` is thrown when the response lacks the `"elements"` key, or when an element lacks a required field. An `ArgumentError` is thrown when an id or level is not a whole number.
+
+### Example
+```julia
+model = MyFredReleaseTablesEndpointModel(apikey = apikey, release_id = 53);
+table = api(MyFredReleaseTablesEndpointModel, url("https://api.stlouisfed.org", model); handler = process_release_tables_response_dataframe);
+```
+"""
+function process_release_tables_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
+
+    # initialize: one array for each column of the table -
+    element_ids = Array{Int64,1}();
+    parent_ids = Array{Union{Missing,Int64},1}();
+    series_ids = Array{Union{Missing,String},1}();
+    types = Array{String,1}();
+    element_names = Array{String,1}();
+    lines = Array{Union{Missing,String},1}();
+    levels = Array{Int64,1}();
+
+    # parse the response, and visit the elements one at a time -
+    response_dict = JSON.parse(response);
+    for data ∈ values(response_dict["elements"])
+
+        # the element id, as an Int64 -
+        push!(element_ids, _to_int(data["element_id"]));
+        # the parent id as an Int64, or missing when FRED sends none -
+        parent_id = _value_or_missing(data, "parent_id");
+        if (ismissing(parent_id) == true)
+            push!(parent_ids, missing);
+        else
+            push!(parent_ids, _to_int(parent_id));
+        end
+        # the series id, or missing when FRED sends none -
+        push!(series_ids, _value_or_missing(data, "series_id"));
+        # the type of the element -
+        push!(types, data["type"]);
+        # the name of the element -
+        push!(element_names, data["name"]);
+        # the line number, or missing when FRED sends none -
+        push!(lines, _value_or_missing(data, "line"));
+        # the level, as an Int64 -
+        push!(levels, _to_int(data["level"]));
+    end
+
+    # put the columns into a table, and return it -
+    dataframe = DataFrame(element_id = element_ids, parent_id = parent_ids, series_id = series_ids, type = types,
+        name = element_names, line = lines, level = levels);
+    return dataframe
+end
+
+"""
+    process_maps_series_data_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
+
+Process the JSON response string from the `geofred/series/data` endpoint of the FRED API.
+We parse the response string, select the records under `meta.data`, and return them as a `DataFrame`.
+FRED sends the records as a dictionary keyed by date, with a list of records for each date.
+When `meta.data` is a list of records instead, we use `meta.date` as the date of each record.
+
+### Arguments
+- `model::Type{T}`: the endpoint model type. Must be a subtype of `AbstractFredEndpointModel`.
+- `response::String`: the JSON response string from the `geofred/series/data` endpoint.
+
+### Returns
+- `DataFrame`: a table with one row for each region and date, in the order of the response. The columns are:
+    - `date::Date`: the date of the value.
+    - `region::String`: the name of the region.
+    - `code::String`: the code of the region.
+    - `series_id::String`: the id of the series of the region.
+    - `value::Union{Missing,Float64}`: the value for the region, or `missing` when FRED sends `"."`.
+
+  If the response holds no records, the table is empty.
+
+### Throws
+- The JSON parser throws an error when `response` is not valid JSON. A `KeyError` is thrown when the response lacks the `"meta"` or `"data"` key, or when a record lacks a required field. An `ArgumentError` is thrown when a date or value is malformed.
+
+### Example
+```julia
+model = MyFredMapsSeriesDataEndpointModel(apikey = apikey, series_id = "WIPCPI");
+table = api(MyFredMapsSeriesDataEndpointModel, url("https://api.stlouisfed.org", model); handler = process_maps_series_data_response_dataframe);
+```
+"""
+function process_maps_series_data_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
+
+    # initialize: one array for each column of the table -
+    dates = Array{Date,1}();
+    regions = Array{String,1}();
+    codes = Array{String,1}();
+    series_ids = Array{String,1}();
+    values_list = Array{Union{Missing,Float64},1}();
+
+    # parse the response, and collect the (period, record) pairs under meta.data -
+    response_dict = JSON.parse(response);
+    period_pairs = _collect_period_records(response_dict["meta"]);
+    for (period, data) ∈ period_pairs
+
+        # the date of the value, as a Date -
+        push!(dates, Date(period));
+        # the name of the region -
+        push!(regions, data["region"]);
+        # the code of the region -
+        push!(codes, data["code"]);
+        # the id of the series of the region -
+        push!(series_ids, data["series_id"]);
+        # the value, or missing when FRED sends a period -
+        push!(values_list, _to_float(data["value"]));
+    end
+
+    # put the columns into a table, and return it -
+    dataframe = DataFrame(date = dates, region = regions, code = codes, series_id = series_ids, value = values_list);
+    return dataframe
+end
+
+"""
+    process_maps_regional_data_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
+
+Process the JSON response string from the `geofred/regional/data` endpoint of the FRED API.
+We parse the response string and visit each entry of the response, which holds the title of the series group and its data.
+For each entry, we select the records under `data`, and return them as a `DataFrame`.
+FRED sends the records as a dictionary keyed by period, with a list of records for each period.
+
+### Arguments
+- `model::Type{T}`: the endpoint model type. Must be a subtype of `AbstractFredEndpointModel`.
+- `response::String`: the JSON response string from the `geofred/regional/data` endpoint.
+
+### Returns
+- `DataFrame`: a table with one row for each region and period, in the order of the response. The columns are:
+    - `period::String`: the period of the value, as text.
+    - `region::String`: the name of the region.
+    - `code::String`: the code of the region.
+    - `series_id::String`: the id of the series of the region.
+    - `value::Union{Missing,Float64}`: the value for the region, or `missing` when FRED sends `"."`.
+
+  If the response holds no entries, the table is empty.
+
+### Throws
+- The JSON parser throws an error when `response` is not valid JSON. A `KeyError` is thrown when an entry lacks the `"data"` key, or when a record lacks a required field. An `ArgumentError` is thrown when a value is malformed.
+
+### Example
+```julia
+model = MyFredMapsRegionalDataEndpointModel(apikey = apikey, series_group = "882", region_type = "state", date = "2013-01-01", season = "NSA", units = "Dollars", frequency = "a");
+table = api(MyFredMapsRegionalDataEndpointModel, url("https://api.stlouisfed.org", model); handler = process_maps_regional_data_response_dataframe);
+```
+"""
+function process_maps_regional_data_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
+
+    # initialize: one array for each column of the table -
+    periods = Array{String,1}();
+    regions = Array{String,1}();
+    codes = Array{String,1}();
+    series_ids = Array{String,1}();
+    values_list = Array{Union{Missing,Float64},1}();
+
+    # parse the response, and visit each entry (the title of the series group and its data) -
+    response_dict = JSON.parse(response);
+    for entry ∈ values(response_dict)
+
+        # collect the (period, record) pairs of the entry, and visit them one at a time -
+        period_pairs = _collect_period_records(entry);
+        for (period, data) ∈ period_pairs
+
+            # the period, as text -
+            push!(periods, period);
+            # the name of the region -
+            push!(regions, data["region"]);
+            # the code of the region -
+            push!(codes, data["code"]);
+            # the id of the series of the region -
+            push!(series_ids, data["series_id"]);
+            # the value, or missing when FRED sends a period -
+            push!(values_list, _to_float(data["value"]));
+        end
+    end
+
+    # put the columns into a table, and return it -
+    dataframe = DataFrame(period = periods, region = regions, code = codes, series_id = series_ids, value = values_list);
+    return dataframe
+end
+
+"""
+    process_release_observations_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
+
+Process the JSON response string from the version 2 `fred/release/observations` endpoint of the FRED API.
+We parse the response string, visit each series, and visit each observation of the series.
+We return the observations of all series as one `DataFrame`.
+
+### Arguments
+- `model::Type{T}`: the endpoint model type. Must be a subtype of `AbstractFredEndpointModel`.
+- `response::String`: the JSON response string from the version 2 `fred/release/observations` endpoint.
+
+### Returns
+- `DataFrame`: a table with one row for each observation, in the order of the response. The columns are:
+    - `series_id::String`: the id of the series that holds the observation.
+    - `date::Date`: the date of the observation.
+    - `value::Union{Missing,Float64}`: the value of the observation, or `missing` when FRED sends `"."`.
+
+  If the response holds no series, the table is empty.
+
+### Throws
+- The JSON parser throws an error when `response` is not valid JSON. A `KeyError` is thrown when the response lacks the `"series"` key, or when a series or an observation lacks a required field. An `ArgumentError` is thrown when a date or value is malformed.
+
+### Example
+```julia
+model = MyFredV2ReleaseObservationsEndpointModel(apikey = apikey, release_id = 52);
+table = api(MyFredV2ReleaseObservationsEndpointModel, url("https://api.stlouisfed.org", model); handler = process_release_observations_response_dataframe);
+```
+"""
+function process_release_observations_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
+
+    # initialize: one array for each column of the table -
+    series_ids = Array{String,1}();
+    dates = Array{Date,1}();
+    values_list = Array{Union{Missing,Float64},1}();
+
+    # parse the response, and visit the series one at a time -
+    response_dict = JSON.parse(response);
+    for series ∈ response_dict["series"]
+
+        # visit the observations of the series one at a time -
+        for data ∈ series["observations"]
+
+            # the id of the series that holds the observation -
+            push!(series_ids, series["series_id"]);
+            # the date of the observation, as a Date -
+            push!(dates, Date(data["date"]));
+            # the value, or missing when FRED sends a period -
+            push!(values_list, _to_float(data["value"]));
+        end
+    end
+
+    # put the columns into a table, and return it -
+    dataframe = DataFrame(series_id = series_ids, date = dates, value = values_list);
+    return dataframe
+end
+
 # --- PUBLIC METHODS ABOVE HERE -------------------------------------------------------------------------------- #
 
 # --- PRIVATE METHODS BELOW HERE ------------------------------------------------------------------------------- #
@@ -603,6 +862,128 @@ function _parse_value(text::String)::Union{Missing,Float64}
 
     # otherwise, convert the text to a Float64 -
     return parse(Float64, text);
+end
+
+"""
+    _to_int(x)::Int64
+
+Private helper. It converts an id or a level from a FRED response to an `Int64`.
+FRED sends these fields as numbers in some records and as text in others.
+
+### Arguments
+- `x`: an `Int64`, or a `String` that holds a whole number, e.g., `"12"`.
+
+### Returns
+- The `Int64` that `x` holds.
+
+### Throws
+- An `ArgumentError` when `x` is a `String` that is not a whole number, or when `x` is neither an `Int64` nor a `String`.
+
+### Example
+```julia
+level = FredAPI._to_int("2"); # 2
+```
+"""
+function _to_int(x)::Int64
+
+    # a number stays as it is -
+    if (x isa Int64)
+        return x;
+    end
+
+    # text becomes a number -
+    if (x isa String)
+        return parse(Int64, x);
+    end
+
+    # any other type is not an id or a level -
+    throw(ArgumentError("expected an Int64 or a String, but got a value of type $(typeof(x))"));
+end
+
+"""
+    _to_float(x)::Union{Missing,Float64}
+
+Private helper. It converts a value from a FRED response to a `Float64`.
+FRED sends a value as text in some endpoints and as a number in others.
+
+### Arguments
+- `x`: a `String` such as `"3.65"` or `"."`, a number, or `nothing` (a JSON `null`).
+
+### Returns
+- `missing` when `x` is `nothing` or the text `"."`, otherwise the `Float64` that `x` holds.
+
+### Throws
+- An `ArgumentError` when `x` is text that is not a period and not a number, or when `x` is neither text, a number, nor `nothing`.
+
+### Example
+```julia
+value = FredAPI._to_float(35544); # 35544.0
+```
+"""
+function _to_float(x)::Union{Missing,Float64}
+
+    # a JSON null has no value -
+    if (isnothing(x) == true)
+        return missing;
+    end
+
+    # text goes through the period rule -
+    if (x isa String)
+        return _parse_value(x);
+    end
+
+    # a number becomes a Float64 -
+    if (x isa Number)
+        return Float64(x);
+    end
+
+    # any other type is not a value -
+    throw(ArgumentError("expected text or a number, but got a value of type $(typeof(x))"));
+end
+
+"""
+    _collect_period_records(holder)::Vector{Tuple{String,Any}}
+
+Private helper. It collects the records of a maps response as (period, record) pairs.
+The `holder` is the dictionary that has the key `"data"`.
+FRED sends `data` as a dictionary keyed by period, with a list of records for each period.
+When `data` is a list of records instead, `holder["date"]` is the period of each record.
+
+### Arguments
+- `holder`: the parsed dictionary that holds `"data"`, e.g., the value of `"meta"`.
+
+### Returns
+- A vector of (period, record) pairs, in the order of the response. The vector is empty when `data` holds no records.
+
+### Throws
+- A `KeyError` when `holder` lacks `"data"`, or when `data` holds records and `holder` lacks `"date"`.
+
+### Example
+```julia
+period_pairs = FredAPI._collect_period_records(Dict("data" => Dict("2012-01-01" => [Dict("code" => "01")])));
+```
+"""
+function _collect_period_records(holder)::Vector{Tuple{String,Any}}
+
+    # initialize: the vector of pairs -
+    period_pairs = Vector{Tuple{String,Any}}();
+    data_holder = holder["data"];
+
+    # data is a dictionary keyed by period: pair each record with its period -
+    if (data_holder isa AbstractDict)
+        for (period, record_list) ∈ data_holder
+            for record ∈ record_list
+                push!(period_pairs, (String(period), record));
+            end
+        end
+        return period_pairs
+    end
+
+    # data is a list of records: pair each record with the date of the response -
+    for record ∈ data_holder
+        push!(period_pairs, (String(holder["date"]), record));
+    end
+    return period_pairs
 end
 
 """

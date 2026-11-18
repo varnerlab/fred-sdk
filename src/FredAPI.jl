@@ -27,6 +27,8 @@ module FredAPI
     export process_search_response_dataframe, process_observations_response_dataframe, process_series_response_dataframe
     export process_categories_response_dataframe, process_releases_response_dataframe, process_release_dates_response_dataframe
     export process_sources_response_dataframe, process_tags_response_dataframe, process_vintage_dates_response_dataframe
+    export process_release_tables_response_dataframe, process_maps_series_data_response_dataframe
+    export process_maps_regional_data_response_dataframe, process_release_observations_response_dataframe
 
     # load the package code, in this order -
     include("Types.jl")   # the endpoint models

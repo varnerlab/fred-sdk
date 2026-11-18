@@ -202,3 +202,126 @@ tbl = process_observations_response_dataframe(MyFredSeriesObservationsEndpointMo
 @test ismissing(FredAPI._value_or_missing(Dict{String,Any}("a" => 1), "b"))
 @test ismissing(FredAPI._value_or_missing(Dict{String,Any}("a" => nothing), "a"))
 @test FredAPI._value_or_missing(Dict{String,Any}("a" => ""), "a") == ""
+
+# the table handlers for release tables, maps, and version 2: the fixtures hold nested records, so each handler gets its own first-row checks -
+release_tables_columns = [:element_id, :parent_id, :series_id, :type, :name, :line, :level];
+maps_series_columns = [:date, :region, :code, :series_id, :value];
+maps_regional_columns = [:period, :region, :code, :series_id, :value];
+observations_columns = [:series_id, :date, :value];
+
+# release tables: one row for each element, in the order of the response -
+body = read(joinpath(fixtures_dir, "fred_release_tables.json"), String);
+parsed = JSON.parse(body);
+element_list = collect(values(parsed["elements"]));
+tbl = process_release_tables_response_dataframe(model_of["fred_release_tables"], body);
+@test tbl isa DataFrame
+@test Symbol.(names(tbl)) == release_tables_columns
+@test nrow(tbl) == length(element_list)
+@test tbl.element_id[1] == element_list[1]["element_id"]
+@test tbl.parent_id[1] == element_list[1]["parent_id"]
+@test tbl.series_id[1] == element_list[1]["series_id"]
+@test tbl.type[1] == element_list[1]["type"]
+@test tbl.name[1] == element_list[1]["name"]
+@test tbl.line[1] == element_list[1]["line"]
+@test tbl.level[1] == parse(Int64, element_list[1]["level"])
+
+# maps series data: one row for each record, with the date of the period -
+body = read(joinpath(fixtures_dir, "geofred_series_data.json"), String);
+parsed = JSON.parse(body);
+period_records = parsed["meta"]["data"]["2012-01-01"];
+tbl = process_maps_series_data_response_dataframe(model_of["geofred_series_data"], body);
+@test tbl isa DataFrame
+@test Symbol.(names(tbl)) == maps_series_columns
+@test nrow(tbl) == length(period_records)
+@test tbl.date[1] == Date("2012-01-01")
+@test tbl.region[1] == period_records[1]["region"]
+@test tbl.code[1] == period_records[1]["code"]
+@test tbl.series_id[1] == period_records[1]["series_id"]
+@test tbl.value[1] == Float64(period_records[1]["value"])
+
+# maps regional data: one row for each record, with the period as text -
+body = read(joinpath(fixtures_dir, "geofred_regional_data.json"), String);
+parsed = JSON.parse(body);
+period_records = parsed["meta"]["data"]["2013-01-01"];
+tbl = process_maps_regional_data_response_dataframe(model_of["geofred_regional_data"], body);
+@test tbl isa DataFrame
+@test Symbol.(names(tbl)) == maps_regional_columns
+@test nrow(tbl) == length(period_records)
+@test tbl.period[1] == "2013-01-01"
+@test tbl.region[1] == period_records[1]["region"]
+@test tbl.code[1] == period_records[1]["code"]
+@test tbl.series_id[1] == period_records[1]["series_id"]
+@test tbl.value[1] == Float64(period_records[1]["value"])
+
+# version 2 release observations: one row for each observation of each series -
+body = read(joinpath(fixtures_dir, "fred_v2_release_observations.json"), String);
+parsed = JSON.parse(body);
+observation_count = 0;
+for series in parsed["series"]
+    global observation_count += length(series["observations"]);
+end
+first_series = parsed["series"][1];
+first_observation = first_series["observations"][1];
+tbl = process_release_observations_response_dataframe(model_of["fred_v2_release_observations"], body);
+@test tbl isa DataFrame
+@test Symbol.(names(tbl)) == observations_columns
+@test nrow(tbl) == observation_count
+@test tbl.series_id[1] == first_series["series_id"]
+@test tbl.date[1] == Date(first_observation["date"])
+@test tbl.value[1] == parse(Float64, first_observation["value"])
+@test ismissing(tbl.value[2])
+@test eltype(tbl.value) == Union{Missing,Float64}
+
+# empty inputs: no rows, the right column names -
+tbl = process_release_tables_response_dataframe(model_of["fred_release_tables"], "{\"elements\": {}}");
+@test nrow(tbl) == 0
+@test Symbol.(names(tbl)) == release_tables_columns
+@test eltype(tbl.level) == Int64
+tbl = process_maps_series_data_response_dataframe(model_of["geofred_series_data"], "{\"meta\": {\"date\": \"2012-01-01\", \"data\": []}}");
+@test nrow(tbl) == 0
+@test Symbol.(names(tbl)) == maps_series_columns
+@test eltype(tbl.date) == Date
+tbl = process_maps_regional_data_response_dataframe(model_of["geofred_regional_data"], "{}");
+@test nrow(tbl) == 0
+@test Symbol.(names(tbl)) == maps_regional_columns
+tbl = process_release_observations_response_dataframe(model_of["fred_v2_release_observations"], "{\"series\": []}");
+@test nrow(tbl) == 0
+@test Symbol.(names(tbl)) == observations_columns
+
+# release tables: a level, element id, or parent id as text or as a number gives the same Int64; absent or null fields become missing -
+body = "{\"elements\": {\"1\": {\"element_id\": \"7\", \"parent_id\": null, \"type\": \"group\", \"name\": \"A\", \"level\": \"1\"}, " *
+    "\"2\": {\"element_id\": 8, \"parent_id\": \"7\", \"series_id\": \"S\", \"type\": \"series\", \"name\": \"B\", \"line\": null, \"level\": 1}}}";
+tbl = process_release_tables_response_dataframe(model_of["fred_release_tables"], body);
+@test tbl.level == [1, 1]
+@test tbl.element_id == [7, 8]
+@test ismissing(tbl.parent_id[1])
+@test tbl.parent_id[2] == 7
+@test ismissing(tbl.series_id[1])
+@test tbl.series_id[2] == "S"
+@test ismissing(tbl.line[1])
+@test ismissing(tbl.line[2])
+
+# maps: a "." value is missing, and a list of records takes the date from meta.date -
+body = "{\"meta\": {\"data\": {\"2012-01-01\": [{\"region\": \"A\", \"code\": \"01\", \"value\": \".\", \"series_id\": \"S1\"}, " *
+    "{\"region\": \"B\", \"code\": \"02\", \"value\": \"2.5\", \"series_id\": \"S2\"}]}}}";
+tbl = process_maps_series_data_response_dataframe(model_of["geofred_series_data"], body);
+@test ismissing(tbl.value[1])
+@test tbl.value[2] == 2.5
+tbl = process_maps_regional_data_response_dataframe(model_of["geofred_regional_data"], body);
+@test ismissing(tbl.value[1])
+@test tbl.value[2] == 2.5
+body = "{\"meta\": {\"date\": \"2012-01-01\", \"data\": [{\"region\": \"A\", \"code\": \"01\", \"value\": 3, \"series_id\": \"S1\"}]}}";
+tbl = process_maps_series_data_response_dataframe(model_of["geofred_series_data"], body);
+@test tbl.date[1] == Date(2012, 1, 1)
+@test tbl.value[1] == 3.0
+
+# version 2: a "." observation is missing -
+body = "{\"series\": [{\"series_id\": \"S\", \"observations\": [{\"date\": \"2025-01-01\", \"value\": \".\"}, {\"date\": \"2025-01-02\", \"value\": \"4.5\"}]}]}";
+tbl = process_release_observations_response_dataframe(model_of["fred_v2_release_observations"], body);
+@test ismissing(tbl.value[1])
+@test tbl.value[2] == 4.5
+
+# the private helpers -
+@test FredAPI._to_int(5) == 5
+@test FredAPI._to_int("5") == 5
+@test_throws ArgumentError FredAPI._to_int(5.5)
