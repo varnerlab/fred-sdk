@@ -1,0 +1,6 @@
+Manifest.toml
+docs/Manifest.toml
+test/Manifest.toml
+docs/build/
+conf/Configuration.toml
+.DS_Store
