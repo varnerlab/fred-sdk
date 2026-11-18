@@ -9,3 +9,7 @@ end
 @testset "Utility" begin
     include("test_utility.jl")
 end
+
+@testset "Factory helpers" begin
+    include("test_factory_helpers.jl")
+end
