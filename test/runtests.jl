@@ -53,3 +53,10 @@ end
 @testset "Table handlers" begin
     include("test_handlers.jl")
 end
+
+# the live tests call FRED, so they run only when the FRED_API_KEY environment variable holds a key -
+if (haskey(ENV, "FRED_API_KEY") == true)
+    @testset "Live endpoints" begin
+        include("test_live.jl")
+    end
+end
