@@ -6,6 +6,9 @@ using FredAPI
 const KEY = "abcdefghijklmnopqrstuvwxyz123456";
 const BASE = "https://api.stlouisfed.org";
 
+# the example models, shared by the fixture, handler and live tests -
+include("example_models.jl")
+
 # each test file runs in its own testset -
 @testset "Types" begin
     include("test_types.jl")

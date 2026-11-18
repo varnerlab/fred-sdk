@@ -1,6 +1,5 @@
 # test_fixtures.jl: tests for the saved FRED responses in test/fixtures -
 import JSON
-include("example_models.jl")
 
 # the folder that holds the fixtures -
 fixtures_dir = joinpath(@__DIR__, "fixtures");

@@ -3,7 +3,7 @@ import JSON
 using DataFrames
 using Dates
 
-# example_models comes from test_fixtures.jl, which runs first; the folder that holds the fixtures, and the endpoint model of each fixture -
+# the folder that holds the fixtures, and the endpoint model of each fixture -
 fixtures_dir = joinpath(@__DIR__, "fixtures");
 model_of = Dict{String,Any}();
 for (name, model) in example_models(KEY)
