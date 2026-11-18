@@ -30,7 +30,33 @@ handlers = [
     (process_vintage_dates_response_dataframe, "vintage_dates", [:date], ["fred_series_vintagedates"]),
 ];
 
-# the fixtures: the column names, the number of rows, and the first row -
+# the columns that the handlers convert to Date -
+date_columns = [:observation_start, :observation_end, :date];
+
+# the value that a handler should put in a column for a record: a Date for a date column, missing for an absent key or a null, otherwise the value as sent -
+function expected_cell(record, column::Symbol)
+
+    # a vintage date is a text value, not a record with keys -
+    if (record isa String)
+        return Date(record);
+    end
+
+    # an absent key or a null becomes missing -
+    key = String(column);
+    if (haskey(record, key) == false || isnothing(record[key]) == true)
+        return missing;
+    end
+
+    # a date column becomes a Date -
+    if (column in date_columns)
+        return Date(record[key]);
+    end
+
+    # any other value, including an empty string, stays as sent -
+    return record[key];
+end
+
+# the fixtures: the column names, the number of rows, and the first row, column by column -
 for (handler, key, columns, fixtures) in handlers
     for name in fixtures
         raw = read(joinpath(fixtures_dir, name * ".json"), String);
@@ -40,6 +66,9 @@ for (handler, key, columns, fixtures) in handlers
         @test Symbol.(names(frame)) == columns
         @test nrow(frame) == length(record_list)
         @test nrow(frame) > 0
+        for column in columns
+            @test isequal(frame[1, column], expected_cell(record_list[1], column))
+        end
     end
 end
 

@@ -503,13 +503,13 @@ FRED sends the vintage dates as a list of text values, not as a list of records.
 - `response::String`: the JSON response string from the `fred/series/vintagedates` endpoint.
 
 ### Returns
-- `DataFrame`: a table with one row for each record, in the order of the response. The columns are:
+- `DataFrame`: a table with one row for each vintage date, in the order of the response. The columns are:
     - `date::Date`: a vintage date of the series.
 
-  If the response holds no records, the table is empty.
+  If the response holds no vintage dates, the table is empty.
 
 ### Throws
-- The JSON parser throws an error when `response` is not valid JSON. A `KeyError` is thrown when the response lacks the `"vintage_dates"` key, or when a record lacks a required field.
+- The JSON parser throws an error when `response` is not valid JSON. A `KeyError` is thrown when the response lacks the `"vintage_dates"` key. An `ArgumentError` is thrown when a vintage date is a malformed date string.
 
 ### Example
 ```julia
