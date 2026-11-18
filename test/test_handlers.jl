@@ -325,3 +325,35 @@ tbl = process_release_observations_response_dataframe(model_of["fred_v2_release_
 @test FredAPI._to_int(5) == 5
 @test FredAPI._to_int("5") == 5
 @test_throws ArgumentError FredAPI._to_int(5.5)
+
+# every element that appears in a children list also appears in the release table -
+body = read(joinpath(fixtures_dir, "fred_release_tables.json"), String);
+parsed = JSON.parse(body);
+tbl = process_release_tables_response_dataframe(model_of["fred_release_tables"], body);
+for element in values(parsed["elements"])
+    for child in element["children"]
+        @test child["element_id"] in tbl.element_id
+    end
+end
+
+# an absent value, a null value, and an absent series id become missing -
+body = "{\"meta\": {\"data\": {\"2012-01-01\": [{\"region\": \"A\", \"code\": \"01\", \"series_id\": \"S1\"}, " *
+    "{\"region\": \"B\", \"code\": \"02\", \"value\": null, \"series_id\": \"S2\"}, {\"region\": \"C\", \"code\": \"03\", \"value\": 1}]}}}";
+tbl = process_maps_series_data_response_dataframe(model_of["geofred_series_data"], body);
+@test ismissing(tbl.value[1])
+@test ismissing(tbl.value[2])
+@test ismissing(tbl.series_id[3])
+@test eltype(tbl.series_id) == Union{Missing,String}
+tbl = process_maps_regional_data_response_dataframe(model_of["geofred_regional_data"], body);
+@test ismissing(tbl.value[1])
+@test ismissing(tbl.value[2])
+@test ismissing(tbl.series_id[3])
+@test eltype(tbl.series_id) == Union{Missing,String}
+tbl = process_maps_regional_data_response_dataframe(model_of["geofred_regional_data"], "{}");
+@test eltype(tbl.series_id) == Union{Missing,String}
+tbl = process_maps_series_data_response_dataframe(model_of["geofred_series_data"], "{\"meta\": {\"data\": []}}");
+@test eltype(tbl.series_id) == Union{Missing,String}
+body = "{\"series\": [{\"series_id\": \"S\", \"observations\": [{\"date\": \"2025-01-01\"}]}]}";
+tbl = process_release_observations_response_dataframe(model_of["fred_v2_release_observations"], body);
+@test ismissing(tbl.value[1])
+@test ismissing(FredAPI._to_float(missing))

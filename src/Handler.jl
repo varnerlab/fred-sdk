@@ -542,6 +542,7 @@ Process the JSON response string from the `fred/release/tables` endpoint of the 
 We parse the response string, select seven fields from each element of the release table, and return them as a `DataFrame`.
 FRED sends the elements as a dictionary keyed by element id. We visit the elements in the order of the response.
 FRED sends `element_id`, `parent_id`, and `level` as numbers in some records and as text in others. We convert each one to an `Int64`.
+FRED lists every element, nested ones included, as its own entry of `elements`, so each element is one row.
 
 ### Arguments
 - `model::Type{T}`: the endpoint model type. Must be a subtype of `AbstractFredEndpointModel`.
@@ -627,8 +628,8 @@ When `meta.data` is a list of records instead, we use `meta.date` as the date of
     - `date::Date`: the date of the value.
     - `region::String`: the name of the region.
     - `code::String`: the code of the region.
-    - `series_id::String`: the id of the series of the region.
-    - `value::Union{Missing,Float64}`: the value for the region, or `missing` when FRED sends `"."`.
+    - `series_id::Union{Missing,String}`: the id of the series of the region, or `missing` when FRED sends none.
+    - `value::Union{Missing,Float64}`: the value for the region, or `missing` when FRED sends `"."`, `null`, or no value.
 
   If the response holds no records, the table is empty.
 
@@ -647,7 +648,7 @@ function process_maps_series_data_response_dataframe(model::Type{T}, response::S
     dates = Array{Date,1}();
     regions = Array{String,1}();
     codes = Array{String,1}();
-    series_ids = Array{String,1}();
+    series_ids = Array{Union{Missing,String},1}();
     values_list = Array{Union{Missing,Float64},1}();
 
     # parse the response, and collect the (period, record) pairs under meta.data -
@@ -661,10 +662,10 @@ function process_maps_series_data_response_dataframe(model::Type{T}, response::S
         push!(regions, data["region"]);
         # the code of the region -
         push!(codes, data["code"]);
-        # the id of the series of the region -
-        push!(series_ids, data["series_id"]);
+        # the id of the series of the region, or missing when FRED sends none -
+        push!(series_ids, _value_or_missing(data, "series_id"));
         # the value, or missing when FRED sends a period -
-        push!(values_list, _to_float(data["value"]));
+        push!(values_list, _to_float(_value_or_missing(data, "value")));
     end
 
     # put the columns into a table, and return it -
@@ -689,8 +690,8 @@ FRED sends the records as a dictionary keyed by period, with a list of records f
     - `period::String`: the period of the value, as text.
     - `region::String`: the name of the region.
     - `code::String`: the code of the region.
-    - `series_id::String`: the id of the series of the region.
-    - `value::Union{Missing,Float64}`: the value for the region, or `missing` when FRED sends `"."`.
+    - `series_id::Union{Missing,String}`: the id of the series of the region, or `missing` when FRED sends none.
+    - `value::Union{Missing,Float64}`: the value for the region, or `missing` when FRED sends `"."`, `null`, or no value.
 
   If the response holds no entries, the table is empty.
 
@@ -709,7 +710,7 @@ function process_maps_regional_data_response_dataframe(model::Type{T}, response:
     periods = Array{String,1}();
     regions = Array{String,1}();
     codes = Array{String,1}();
-    series_ids = Array{String,1}();
+    series_ids = Array{Union{Missing,String},1}();
     values_list = Array{Union{Missing,Float64},1}();
 
     # parse the response, and visit each entry (the title of the series group and its data) -
@@ -726,10 +727,10 @@ function process_maps_regional_data_response_dataframe(model::Type{T}, response:
             push!(regions, data["region"]);
             # the code of the region -
             push!(codes, data["code"]);
-            # the id of the series of the region -
-            push!(series_ids, data["series_id"]);
+            # the id of the series of the region, or missing when FRED sends none -
+            push!(series_ids, _value_or_missing(data, "series_id"));
             # the value, or missing when FRED sends a period -
-            push!(values_list, _to_float(data["value"]));
+            push!(values_list, _to_float(_value_or_missing(data, "value")));
         end
     end
 
@@ -753,7 +754,7 @@ We return the observations of all series as one `DataFrame`.
 - `DataFrame`: a table with one row for each observation, in the order of the response. The columns are:
     - `series_id::String`: the id of the series that holds the observation.
     - `date::Date`: the date of the observation.
-    - `value::Union{Missing,Float64}`: the value of the observation, or `missing` when FRED sends `"."`.
+    - `value::Union{Missing,Float64}`: the value of the observation, or `missing` when FRED sends `"."`, `null`, or no value.
 
   If the response holds no series, the table is empty.
 
@@ -785,7 +786,7 @@ function process_release_observations_response_dataframe(model::Type{T}, respons
             # the date of the observation, as a Date -
             push!(dates, Date(data["date"]));
             # the value, or missing when FRED sends a period -
-            push!(values_list, _to_float(data["value"]));
+            push!(values_list, _to_float(_value_or_missing(data, "value")));
         end
     end
 
@@ -907,10 +908,10 @@ Private helper. It converts a value from a FRED response to a `Float64`.
 FRED sends a value as text in some endpoints and as a number in others.
 
 ### Arguments
-- `x`: a `String` such as `"3.65"` or `"."`, a number, or `nothing` (a JSON `null`).
+- `x`: a `String` such as `"3.65"` or `"."`, a number, `nothing` (a JSON `null`), or `missing`.
 
 ### Returns
-- `missing` when `x` is `nothing` or the text `"."`, otherwise the `Float64` that `x` holds.
+- `missing` when `x` is `nothing`, `missing`, or the text `"."`, otherwise the `Float64` that `x` holds.
 
 ### Throws
 - An `ArgumentError` when `x` is text that is not a period and not a number, or when `x` is neither text, a number, nor `nothing`.
@@ -921,6 +922,11 @@ value = FredAPI._to_float(35544); # 35544.0
 ```
 """
 function _to_float(x)::Union{Missing,Float64}
+
+    # an absent key has no value -
+    if (ismissing(x) == true)
+        return missing;
+    end
 
     # a JSON null has no value -
     if (isnothing(x) == true)
