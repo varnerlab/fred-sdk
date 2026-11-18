@@ -46,3 +46,7 @@ end
 @testset "Fixtures" begin
     include("test_fixtures.jl")
 end
+
+@testset "Table handlers" begin
+    include("test_handlers.jl")
+end
