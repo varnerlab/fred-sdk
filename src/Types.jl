@@ -892,7 +892,7 @@ end
 """
     mutable struct MyFredReleasesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/releases` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/releases.html.
+Endpoint model for the FRED `fred/releases` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/releases.html.
 This endpoint returns every release of economic data: its identifier, name, and whether FRED publishes a press release for it.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -940,7 +940,7 @@ end
 """
     mutable struct MyFredReleasesDatesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/releases/dates` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/releases_dates.html.
+Endpoint model for the FRED `fred/releases/dates` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/releases_dates.html.
 This endpoint returns the release dates of every release of economic data. Each record holds a release identifier, a release name, and a date.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -956,7 +956,7 @@ Every field is at its empty value by default. A field at its empty value (`""`, 
   field is empty, FRED uses `"release_date"`.
 - `sort_order::String`: the order of the results: `"asc"` (ascending) or `"desc"` (descending). When the field is empty, FRED
   uses `"desc"`.
-- `include_release_dates_with_no_data::Bool`: whether to include the release dates on which a release had no data. When the field
+- `include_release_dates_with_no_data::Bool`: whether to include the release dates that have no data. When the field
   is `false`, FRED leaves out those dates, and the parameter stays out of the URL.
 
 ### Constructors
@@ -993,7 +993,7 @@ end
 """
     mutable struct MyFredReleaseEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/release` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release.html.
+Endpoint model for the FRED `fred/release` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release.html.
 This endpoint returns one release of economic data: its identifier, name, and whether FRED publishes a press release for it.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1029,7 +1029,7 @@ end
 """
     mutable struct MyFredReleaseDatesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/release/dates` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_dates.html.
+Endpoint model for the FRED `fred/release/dates` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_dates.html.
 This endpoint returns the release dates of one release of economic data. Each record holds a release identifier and a date.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1044,7 +1044,7 @@ Every field is at its empty value by default. A field at its empty value (`""`, 
 - `offset::Int64`: the number of results to skip, starting at `0`. When the field is `0`, FRED skips none.
 - `sort_order::String`: the order of the results: `"asc"` (ascending) or `"desc"` (descending). When the field is empty, FRED
   uses `"asc"`.
-- `include_release_dates_with_no_data::Bool`: whether to include the release dates on which a release had no data. When the field
+- `include_release_dates_with_no_data::Bool`: whether to include the release dates that have no data. When the field
   is `false`, FRED leaves out those dates, and the parameter stays out of the URL.
 
 ### Constructors
@@ -1081,7 +1081,7 @@ end
 """
     mutable struct MyFredReleaseSeriesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/release/series` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_series.html.
+Endpoint model for the FRED `fred/release/series` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_series.html.
 This endpoint returns the economic data series that belong to one release.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1150,7 +1150,7 @@ end
 """
     mutable struct MyFredReleaseSourcesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/release/sources` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_sources.html.
+Endpoint model for the FRED `fred/release/sources` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_sources.html.
 This endpoint returns the sources of the data of one release. The results are not paged.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1187,7 +1187,7 @@ end
 """
     mutable struct MyFredReleaseTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/release/tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_tags.html.
+Endpoint model for the FRED `fred/release/tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_tags.html.
 This endpoint returns the tags of the series that belong to one release.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1252,7 +1252,7 @@ end
 """
     mutable struct MyFredReleaseRelatedTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/release/related_tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_related_tags.html.
+Endpoint model for the FRED `fred/release/related_tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_related_tags.html.
 This endpoint returns the tags that are related to a set of tags, among the series that belong to one release.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1321,7 +1321,7 @@ end
 """
     mutable struct MyFredReleaseTablesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/fred/release/tables` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_tables.html.
+Endpoint model for the FRED `fred/release/tables` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_tables.html.
 This endpoint returns the elements of the table of one release. Each element is a section or a series of the table, and an element can have children. This endpoint takes no real-time parameters.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 

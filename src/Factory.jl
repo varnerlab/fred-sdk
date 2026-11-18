@@ -796,7 +796,7 @@ end
 """
     url(base::String, model::MyFredReleasesEndpointModel) -> String
 
-Build the URL string for the `fred/fred/releases` endpoint of the FRED API.
+Build the URL string for the `fred/releases` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns every release of economic data: its identifier, name, and whether FRED publishes a press release for it.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -844,7 +844,7 @@ end
 """
     url(base::String, model::MyFredReleasesDatesEndpointModel) -> String
 
-Build the URL string for the `fred/fred/releases/dates` endpoint of the FRED API.
+Build the URL string for the `fred/releases/dates` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the release dates of every release of economic data. Each record holds a release identifier, a release name, and a date.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -893,7 +893,7 @@ end
 """
     url(base::String, model::MyFredReleaseEndpointModel) -> String
 
-Build the URL string for the `fred/fred/release` endpoint of the FRED API.
+Build the URL string for the `fred/release` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns one release of economic data: its identifier, name, and whether FRED publishes a press release for it.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -938,7 +938,7 @@ end
 """
     url(base::String, model::MyFredReleaseDatesEndpointModel) -> String
 
-Build the URL string for the `fred/fred/release/dates` endpoint of the FRED API.
+Build the URL string for the `fred/release/dates` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the release dates of one release of economic data. Each record holds a release identifier and a date.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -987,7 +987,7 @@ end
 """
     url(base::String, model::MyFredReleaseSeriesEndpointModel) -> String
 
-Build the URL string for the `fred/fred/release/series` endpoint of the FRED API.
+Build the URL string for the `fred/release/series` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the economic data series that belong to one release.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -1040,7 +1040,7 @@ end
 """
     url(base::String, model::MyFredReleaseSourcesEndpointModel) -> String
 
-Build the URL string for the `fred/fred/release/sources` endpoint of the FRED API.
+Build the URL string for the `fred/release/sources` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the sources of the data of one release. The results are not paged.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -1085,7 +1085,7 @@ end
 """
     url(base::String, model::MyFredReleaseTagsEndpointModel) -> String
 
-Build the URL string for the `fred/fred/release/tags` endpoint of the FRED API.
+Build the URL string for the `fred/release/tags` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the tags of the series that belong to one release.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -1137,7 +1137,7 @@ end
 """
     url(base::String, model::MyFredReleaseRelatedTagsEndpointModel) -> String
 
-Build the URL string for the `fred/fred/release/related_tags` endpoint of the FRED API.
+Build the URL string for the `fred/release/related_tags` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the tags that are related to a set of tags, among the series that belong to one release.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -1190,7 +1190,7 @@ end
 """
     url(base::String, model::MyFredReleaseTablesEndpointModel) -> String
 
-Build the URL string for the `fred/fred/release/tables` endpoint of the FRED API.
+Build the URL string for the `fred/release/tables` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the elements of the table of one release. Each element is a section or a series of the table, and an element can have children. This endpoint takes no real-time parameters.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
