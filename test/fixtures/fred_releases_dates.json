@@ -1,0 +1,26 @@
+{
+  "realtime_start": "2026-01-01",
+  "realtime_end": "9999-12-31",
+  "order_by": "release_date",
+  "sort_order": "desc",
+  "count": 8400,
+  "offset": 0,
+  "limit": 3,
+  "release_dates": [
+    {
+      "release_id": 221,
+      "release_name": "Chicago Fed National Financial Conditions Index",
+      "date": "2026-11-18"
+    },
+    {
+      "release_id": 279,
+      "release_name": "Economic Policy Uncertainty",
+      "date": "2026-11-18"
+    },
+    {
+      "release_id": 502,
+      "release_name": "Euro Short Term Rate",
+      "date": "2026-11-18"
+    }
+  ]
+}

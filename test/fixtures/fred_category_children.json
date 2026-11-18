@@ -1,0 +1,19 @@
+{
+  "categories": [
+    {
+      "id": 16,
+      "name": "Exports",
+      "parent_id": 13
+    },
+    {
+      "id": 17,
+      "name": "Imports",
+      "parent_id": 13
+    },
+    {
+      "id": 3000,
+      "name": "Income Payments & Receipts",
+      "parent_id": 13
+    }
+  ]
+}

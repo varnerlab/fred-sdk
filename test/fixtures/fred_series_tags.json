@@ -1,0 +1,35 @@
+{
+  "realtime_start": "2026-11-18",
+  "realtime_end": "2026-11-18",
+  "order_by": "series_count",
+  "sort_order": "asc",
+  "count": 11,
+  "offset": 0,
+  "limit": 1000,
+  "tags": [
+    {
+      "name": "stlfsi",
+      "group_id": "rls",
+      "notes": "St. Louis Financial Stress Index",
+      "created": "2012-08-16 15:21:17-05",
+      "popularity": 13,
+      "series_count": 2
+    },
+    {
+      "name": "fsi",
+      "group_id": "gen",
+      "notes": "Financial Stress Index",
+      "created": "2014-08-08 14:01:37-05",
+      "popularity": 24,
+      "series_count": 30
+    },
+    {
+      "name": "weekly",
+      "group_id": "freq",
+      "notes": "",
+      "created": "2012-02-27 10:18:19-06",
+      "popularity": 64,
+      "series_count": 3628
+    }
+  ]
+}

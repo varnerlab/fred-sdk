@@ -1,0 +1,14 @@
+{
+  "realtime_start": "1776-07-04",
+  "realtime_end": "9999-12-31",
+  "order_by": "vintage_date",
+  "sort_order": "asc",
+  "count": 189,
+  "offset": 0,
+  "limit": 3,
+  "vintage_dates": [
+    "1958-12-21",
+    "1959-02-19",
+    "1959-07-19"
+  ]
+}

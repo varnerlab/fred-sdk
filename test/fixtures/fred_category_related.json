@@ -1,0 +1,19 @@
+{
+  "categories": [
+    {
+      "id": 149,
+      "name": "Arkansas",
+      "parent_id": 27281
+    },
+    {
+      "id": 150,
+      "name": "Illinois",
+      "parent_id": 27281
+    },
+    {
+      "id": 151,
+      "name": "Indiana",
+      "parent_id": 27281
+    }
+  ]
+}

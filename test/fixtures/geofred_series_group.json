@@ -1,0 +1,12 @@
+{
+  "series_group": {
+    "title": "All Employees: Total Private",
+    "region_type": "state",
+    "series_group": "1223",
+    "season": "NSA",
+    "units": "Thousands of Persons",
+    "frequency": "Annual",
+    "min_date": "1990-01-01",
+    "max_date": "2025-01-01"
+  }
+}

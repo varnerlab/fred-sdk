@@ -42,3 +42,7 @@ end
 @testset "Network and the default handler" begin
     include("test_network.jl")
 end
+
+@testset "Fixtures" begin
+    include("test_fixtures.jl")
+end

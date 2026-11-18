@@ -1,0 +1,23 @@
+{
+  "realtime_start": "1776-07-04",
+  "realtime_end": "9999-12-31",
+  "order_by": "release_date",
+  "sort_order": "asc",
+  "count": 28,
+  "offset": 0,
+  "limit": 3,
+  "release_dates": [
+    {
+      "release_id": 82,
+      "date": "1997-02-10"
+    },
+    {
+      "release_id": 82,
+      "date": "1998-02-10"
+    },
+    {
+      "release_id": 82,
+      "date": "1999-02-04"
+    }
+  ]
+}

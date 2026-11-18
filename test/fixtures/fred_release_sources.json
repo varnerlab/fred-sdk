@@ -1,0 +1,20 @@
+{
+  "realtime_start": "2026-11-18",
+  "realtime_end": "2026-11-18",
+  "sources": [
+    {
+      "id": 19,
+      "realtime_start": "2026-11-18",
+      "realtime_end": "2026-11-18",
+      "name": "U.S. Census Bureau",
+      "link": "http://www.census.gov/"
+    },
+    {
+      "id": 18,
+      "realtime_start": "2026-11-18",
+      "realtime_end": "2026-11-18",
+      "name": "U.S. Bureau of Economic Analysis",
+      "link": "http://www.bea.gov/"
+    }
+  ]
+}

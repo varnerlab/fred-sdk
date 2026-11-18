@@ -1,0 +1,37 @@
+{
+  "realtime_start": "2026-11-18",
+  "realtime_end": "2026-11-18",
+  "order_by": "release_id",
+  "sort_order": "asc",
+  "count": 337,
+  "offset": 0,
+  "limit": 3,
+  "releases": [
+    {
+      "id": 1,
+      "realtime_start": "2026-11-18",
+      "realtime_end": "2026-11-18",
+      "name": "Small Business Credit Survey",
+      "press_release": true,
+      "link": "https://www.fedsmallbusiness.org/about",
+      "notes": "The annual Small Business Credit Survey (SBCS) provides timely insights on small business conditions to policymakers, service providers, and lenders. The survey is a national sample of small businesses, or firms with fewer than 500 employees, aimed at providing insight into firms' financing and debt needs and experiences. Its reports focus attention on growing and changing segments of the small business market, including startups, minority-owned firms, women-owned firms, rural firms, and the self-employed and gig workers."
+    },
+    {
+      "id": 2,
+      "realtime_start": "2026-11-18",
+      "realtime_end": "2026-11-18",
+      "name": "Risk-On Risk-Off Index",
+      "press_release": true,
+      "link": "https://www.kansascityfed.org/data-and-trends/risk-on-risk-off-index/",
+      "notes": "The Risk-On Risk-Off (RORO) Index uses daily data from asset markets in the United States and euro area to measure the variation in global investors’ risk appetites."
+    },
+    {
+      "id": 3,
+      "realtime_start": "2026-11-18",
+      "realtime_end": "2026-11-18",
+      "name": "Treasury International Capital: Continuous Securities Long Term (CSLT)",
+      "press_release": false,
+      "link": "https://home.treasury.gov/data/treasury-international-capital-tic-system"
+    }
+  ]
+}

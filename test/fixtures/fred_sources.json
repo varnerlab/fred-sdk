@@ -1,0 +1,32 @@
+{
+  "realtime_start": "2026-11-18",
+  "realtime_end": "2026-11-18",
+  "order_by": "source_id",
+  "sort_order": "asc",
+  "count": 127,
+  "offset": 0,
+  "limit": 3,
+  "sources": [
+    {
+      "id": 1,
+      "realtime_start": "2026-11-18",
+      "realtime_end": "2026-11-18",
+      "name": "Board of Governors of the Federal Reserve System (US)",
+      "link": "https://www.federalreserve.gov"
+    },
+    {
+      "id": 2,
+      "realtime_start": "2026-11-18",
+      "realtime_end": "2026-11-18",
+      "name": "Federal Reserve Banks (Fed Small Business)",
+      "link": "https://www.fedsmallbusiness.org"
+    },
+    {
+      "id": 3,
+      "realtime_start": "2026-11-18",
+      "realtime_end": "2026-11-18",
+      "name": "Federal Reserve Bank of Philadelphia",
+      "link": "https://www.philadelphiafed.org/"
+    }
+  ]
+}

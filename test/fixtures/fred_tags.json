@@ -1,0 +1,35 @@
+{
+  "realtime_start": "2026-11-18",
+  "realtime_end": "2026-11-18",
+  "order_by": "series_count",
+  "sort_order": "desc",
+  "count": 6037,
+  "offset": 0,
+  "limit": 3,
+  "tags": [
+    {
+      "name": "nsa",
+      "group_id": "seas",
+      "notes": "Not Seasonally Adjusted",
+      "created": "2012-02-27 10:18:19-06",
+      "popularity": 100,
+      "series_count": 758944
+    },
+    {
+      "name": "usa",
+      "group_id": "geo",
+      "notes": "United States of America",
+      "created": "2012-02-27 10:18:19-06",
+      "popularity": 100,
+      "series_count": 681570
+    },
+    {
+      "name": "public domain: citation requested",
+      "group_id": "cc",
+      "notes": null,
+      "created": "2018-12-17 23:33:13-06",
+      "popularity": 99,
+      "series_count": 625654
+    }
+  ]
+}

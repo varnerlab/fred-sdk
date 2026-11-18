@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "title": "2025 Per Capita Personal Income by State (Dollars)",
+    "region": "state",
+    "seasonality": "Not Seasonally Adjusted",
+    "units": "Dollars",
+    "frequency": "Annual",
+    "data": {
+      "2013-01-01": [
+        {
+          "region": "Alabama",
+          "code": "01",
+          "value": 35693,
+          "series_id": "ALPCPI"
+        },
+        {
+          "region": "Alaska",
+          "code": "02",
+          "value": 52257,
+          "series_id": "AKPCPI"
+        },
+        {
+          "region": "Arizona",
+          "code": "04",
+          "value": 36752,
+          "series_id": "AZPCPI"
+        }
+      ]
+    }
+  }
+}

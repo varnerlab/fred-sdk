@@ -1,0 +1,65 @@
+{
+  "has_more": true,
+  "next_cursor": "ABSITCMDODFS,1993-01-01",
+  "release": {
+    "release_id": 52,
+    "name": "Z.1 Financial Accounts of the United States",
+    "url": "http://www.federalreserve.gov/releases/z1/",
+    "sources": [
+      {
+        "name": "Board of Governors of the Federal Reserve System (US)",
+        "url": "https://www.federalreserve.gov"
+      }
+    ]
+  },
+  "series": [
+    {
+      "series_id": "ABSITCMAHDFS",
+      "title": "Issuers of Asset-Backed Securities; Debt Securities and Loans; Asset, Level",
+      "frequency": "Quarterly",
+      "units": "Millions of U.S. Dollars",
+      "seasonal_adjustment": "Not Seasonally Adjusted",
+      "last_updated": "2026-09-11T16:48:10Z",
+      "copyright_id": "public domain: citation requested",
+      "notes": " Financial Accounts Guide (https://www.federalreserve.gov/apps/fof/Default.aspx).\nWith each quarterly release, the source may make major data and structural revisions to the series and tables. These changes are available in the Release Highlights (https://www.federalreserve.gov/apps/fof/FOFHighlight.aspx).\nIn the Financial Accounts, the source identifies each series by a string of patterned letters and numbers. For a detailed description, including how this series is constructed, see the series analyzer (https://www.federalreserve.gov/apps/fof/SeriesAnalyzer.aspx?s=FL674004005&t=) provided by the source. To easily map the Board series IDs to FRED series IDs, see the  DDP-FRED crosswalk (https://www.federalreserve.gov/data/data-download-fred-information.htm). </p>",
+      "observations": [
+        {
+          "date": "1945-10-01",
+          "value": "0"
+        },
+        {
+          "date": "1946-01-01",
+          "value": "."
+        },
+        {
+          "date": "1946-04-01",
+          "value": "."
+        }
+      ]
+    },
+    {
+      "series_id": "ABSITCMDODFS",
+      "title": "Issuers of Asset-Backed Securities; Total Liability, Level (DISCONTINUED)",
+      "frequency": "Quarterly",
+      "units": "Millions of Dollars",
+      "seasonal_adjustment": "Not Seasonally Adjusted",
+      "last_updated": "2025-09-19T17:44:02Z",
+      "copyright_id": "public domain: citation requested",
+      "notes": "Source ID: FL674190005.Q\n\nFor more information about the Flow of Funds tables, see the Financial Accounts Guide (https://www.federalreserve.gov/apps/fof/Default.aspx).\n\nWith each quarterly release, the source may make major data and structural revisions to the series and tables. These changes are available in the Release Highlights (https://www.federalreserve.gov/apps/fof/FOFHighlight.aspx).\n\nIn the Financial Accounts, the source identifies each series by a string of patterned letters and numbers. For a detailed description, including how this series is constructed, see the series analyzer (https://www.federalreserve.gov/apps/fof/SeriesAnalyzer.aspx?s=FL674190005&t=) provided by the source.",
+      "observations": [
+        {
+          "date": "1945-10-01",
+          "value": "0"
+        },
+        {
+          "date": "1946-10-01",
+          "value": "0"
+        },
+        {
+          "date": "1947-10-01",
+          "value": "0"
+        }
+      ]
+    }
+  ]
+}
