@@ -1,6 +1,4 @@
 # test_utility.jl: tests for read_configuration and hidekey -
-const KEY = "abcdefghijklmnopqrstuvwxyz123456";
-const BASE = "https://api.stlouisfed.org";
 
 # write a configuration file with the given text, and return its path -
 function write_config(dir::String, name::String, text::String)::String

@@ -1,6 +1,4 @@
 # test_factory_helpers.jl: tests for _add_parameter! and _build_url -
-const KEY = "abcdefghijklmnopqrstuvwxyz123456";
-const BASE = "https://api.stlouisfed.org";
 
 # an empty String, 0, and false add nothing to the parameter list -
 let
