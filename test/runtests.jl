@@ -5,3 +5,7 @@ using FredAPI
 @testset "Types" begin
     include("test_types.jl")
 end
+
+@testset "Utility" begin
+    include("test_utility.jl")
+end

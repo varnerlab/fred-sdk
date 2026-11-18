@@ -9,6 +9,7 @@ module FredAPI
 
     # what do we want to export? one export line for each kind of name -
     export AbstractFredEndpointModel
+    export read_configuration, hidekey
 
     # load the package code, in this order -
     include("Types.jl")   # the endpoint models
