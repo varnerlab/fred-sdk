@@ -574,3 +574,315 @@ mutable struct MyFredSeriesVintageDatesEndpointModel <: AbstractFredEndpointMode
         sort_order::String = "") = new(
             apikey, series_id, realtime_start, realtime_end, limit, offset, sort_order);
 end
+
+# --- CATEGORIES ENDPOINTS ------------------------------------------------------------------------------------- #
+
+"""
+    mutable struct MyFredCategoryEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `fred/category` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category.html.
+This endpoint returns one category: its identifier, name, and parent category.
+Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `category_id::Int64`: the identifier of the category, e.g., `125`. `0` is the root category of FRED. When the field is `0`, FRED uses the root category, so leaving the field out gives the same result.
+
+### Constructors
+- `MyFredCategoryEndpointModel(; apikey::String = "", category_id::Int64 = 0)`: returns a new `MyFredCategoryEndpointModel`
+  instance. Every argument is a keyword argument.
+"""
+mutable struct MyFredCategoryEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    category_id::Int64
+
+    # methods -
+    MyFredCategoryEndpointModel(;
+        apikey::String = "",
+        category_id::Int64 = 0) = new(
+            apikey, category_id);
+end
+
+"""
+    mutable struct MyFredCategoryChildrenEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `fred/category/children` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_children.html.
+This endpoint returns the child categories of one category.
+Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `category_id::Int64`: the identifier of the category, e.g., `13`. `0` is the root category of FRED. When the field is `0`, FRED uses the root category, so leaving the field out gives the same result.
+- `realtime_start::String`: the first day of the real-time period, written as `"YYYY-MM-DD"`. The real-time period selects
+  the vintage of the data that we see, i.e., the data as it stood on those days. When the field is empty, FRED uses today's
+  date.
+- `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
+  today's date.
+
+### Constructors
+- `MyFredCategoryChildrenEndpointModel(; apikey::String = "", category_id::Int64 = 0, realtime_start::String = "",
+  realtime_end::String = "")`: returns a new `MyFredCategoryChildrenEndpointModel` instance. Every argument is a keyword
+  argument.
+"""
+mutable struct MyFredCategoryChildrenEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    category_id::Int64
+    realtime_start::String
+    realtime_end::String
+
+    # methods -
+    MyFredCategoryChildrenEndpointModel(;
+        apikey::String = "",
+        category_id::Int64 = 0,
+        realtime_start::String = "",
+        realtime_end::String = "") = new(
+            apikey, category_id, realtime_start, realtime_end);
+end
+
+"""
+    mutable struct MyFredCategoryRelatedEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `fred/category/related` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_related.html.
+This endpoint returns the categories that are related to one category. Most categories have no related categories.
+Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `category_id::Int64`: the identifier of the category, e.g., `32073`. FRED requires this field.
+- `realtime_start::String`: the first day of the real-time period, written as `"YYYY-MM-DD"`. The real-time period selects
+  the vintage of the data that we see, i.e., the data as it stood on those days. When the field is empty, FRED uses today's
+  date.
+- `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
+  today's date.
+
+### Constructors
+- `MyFredCategoryRelatedEndpointModel(; apikey::String = "", category_id::Int64 = 0, realtime_start::String = "",
+  realtime_end::String = "")`: returns a new `MyFredCategoryRelatedEndpointModel` instance. Every argument is a keyword
+  argument.
+"""
+mutable struct MyFredCategoryRelatedEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    category_id::Int64
+    realtime_start::String
+    realtime_end::String
+
+    # methods -
+    MyFredCategoryRelatedEndpointModel(;
+        apikey::String = "",
+        category_id::Int64 = 0,
+        realtime_start::String = "",
+        realtime_end::String = "") = new(
+            apikey, category_id, realtime_start, realtime_end);
+end
+
+"""
+    mutable struct MyFredCategorySeriesEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `fred/category/series` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_series.html.
+This endpoint returns the economic data series that belong to one category.
+Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `category_id::Int64`: the identifier of the category, e.g., `125`. FRED requires this field.
+- `realtime_start::String`: the first day of the real-time period, written as `"YYYY-MM-DD"`. The real-time period selects
+  the vintage of the data that we see, i.e., the data as it stood on those days. When the field is empty, FRED uses today's
+  date.
+- `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
+  today's date.
+- `limit::Int64`: the largest number of series to return, between `1` and `1000`. When the field is `0`, FRED uses `1000`.
+- `offset::Int64`: the number of results to skip, starting at `0`. When the field is `0`, FRED skips none.
+- `order_by::String`: the attribute to sort the results by: `"series_id"`, `"title"`, `"units"`, `"frequency"`,
+  `"seasonal_adjustment"`, `"realtime_start"`, `"realtime_end"`, `"last_updated"`, `"observation_start"`,
+  `"observation_end"`, `"popularity"`, or `"group_popularity"`. When the field is empty, FRED uses `"series_id"`.
+- `sort_order::String`: the order of the results: `"asc"` (ascending) or `"desc"` (descending). When the field is empty, FRED
+  uses `"asc"`.
+- `filter_variable::String`: the attribute of a series to filter the results by: `"frequency"`, `"units"`, or
+  `"seasonal_adjustment"`. Set this field together with `filter_value`. When the field is empty, FRED does not filter.
+- `filter_value::String`: the value of the `filter_variable` attribute to keep, e.g., `"Monthly"` for the frequency or
+  `"Percent"` for the units. Set this field together with `filter_variable`. When the field is empty, FRED does not filter.
+- `tag_names::String`: the tag names that a series must all have, separated by semicolons, e.g., `"income;bea"`. When the
+  field is empty, FRED does not select by tag.
+- `exclude_tag_names::String`: the tag names that a series must not have, separated by semicolons. Set this field together
+  with `tag_names`. When the field is empty, FRED does not exclude by tag.
+
+### Constructors
+- `MyFredCategorySeriesEndpointModel(; apikey::String = "", category_id::Int64 = 0, realtime_start::String = "",
+  realtime_end::String = "", limit::Int64 = 0, offset::Int64 = 0, order_by::String = "", sort_order::String = "",
+  filter_variable::String = "", filter_value::String = "", tag_names::String = "", exclude_tag_names::String = "")`: returns
+  a new `MyFredCategorySeriesEndpointModel` instance. Every argument is a keyword argument.
+"""
+mutable struct MyFredCategorySeriesEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    category_id::Int64
+    realtime_start::String
+    realtime_end::String
+    limit::Int64
+    offset::Int64
+    order_by::String
+    sort_order::String
+    filter_variable::String
+    filter_value::String
+    tag_names::String
+    exclude_tag_names::String
+
+    # methods -
+    MyFredCategorySeriesEndpointModel(;
+        apikey::String = "",
+        category_id::Int64 = 0,
+        realtime_start::String = "",
+        realtime_end::String = "",
+        limit::Int64 = 0,
+        offset::Int64 = 0,
+        order_by::String = "",
+        sort_order::String = "",
+        filter_variable::String = "",
+        filter_value::String = "",
+        tag_names::String = "",
+        exclude_tag_names::String = "") = new(
+            apikey, category_id, realtime_start, realtime_end, limit, offset, order_by, sort_order, filter_variable, filter_value, tag_names, exclude_tag_names);
+end
+
+"""
+    mutable struct MyFredCategoryTagsEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `fred/category/tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_tags.html.
+This endpoint returns the tags of the series that belong to one category.
+Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `category_id::Int64`: the identifier of the category, e.g., `125`. FRED requires this field.
+- `realtime_start::String`: the first day of the real-time period, written as `"YYYY-MM-DD"`. The real-time period selects
+  the vintage of the data that we see, i.e., the data as it stood on those days. When the field is empty, FRED uses today's
+  date.
+- `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
+  today's date.
+- `tag_names::String`: the tag names that a series must all have, separated by semicolons, e.g., `"income;bea"`. When the
+  field is empty, FRED does not select by tag.
+- `tag_group_id::String`: the group of tags to return: `"freq"` (frequency), `"gen"` (general or concept), `"geo"`
+  (geography), `"geot"` (geography type), `"rls"` (release), `"seas"` (seasonal adjustment), or `"src"` (source). When the
+  field is empty, FRED returns the tags of every group.
+- `search_text::String`: the words to match against the tag names and the tag notes. When the field is empty, FRED does
+  not filter the tags by text.
+- `limit::Int64`: the largest number of tags to return, between `1` and `1000`. When the field is `0`, FRED uses `1000`.
+- `offset::Int64`: the number of results to skip, starting at `0`. When the field is `0`, FRED skips none.
+- `order_by::String`: the attribute to sort the results by: `"series_count"`, `"popularity"`, `"created"`, `"name"`, or
+  `"group_id"`. When the field is empty, FRED uses `"series_count"`.
+- `sort_order::String`: the order of the results: `"asc"` (ascending) or `"desc"` (descending). When the field is empty, FRED
+  uses `"asc"`.
+
+### Constructors
+- `MyFredCategoryTagsEndpointModel(; apikey::String = "", category_id::Int64 = 0, realtime_start::String = "",
+  realtime_end::String = "", tag_names::String = "", tag_group_id::String = "", search_text::String = "", limit::Int64 = 0,
+  offset::Int64 = 0, order_by::String = "", sort_order::String = "")`: returns a new `MyFredCategoryTagsEndpointModel`
+  instance. Every argument is a keyword argument.
+"""
+mutable struct MyFredCategoryTagsEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    category_id::Int64
+    realtime_start::String
+    realtime_end::String
+    tag_names::String
+    tag_group_id::String
+    search_text::String
+    limit::Int64
+    offset::Int64
+    order_by::String
+    sort_order::String
+
+    # methods -
+    MyFredCategoryTagsEndpointModel(;
+        apikey::String = "",
+        category_id::Int64 = 0,
+        realtime_start::String = "",
+        realtime_end::String = "",
+        tag_names::String = "",
+        tag_group_id::String = "",
+        search_text::String = "",
+        limit::Int64 = 0,
+        offset::Int64 = 0,
+        order_by::String = "",
+        sort_order::String = "") = new(
+            apikey, category_id, realtime_start, realtime_end, tag_names, tag_group_id, search_text, limit, offset, order_by, sort_order);
+end
+
+"""
+    mutable struct MyFredCategoryRelatedTagsEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `fred/category/related_tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_related_tags.html.
+This endpoint returns the tags that are related to a set of tags, among the series that belong to one category.
+Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `category_id::Int64`: the identifier of the category, e.g., `125`. FRED requires this field.
+- `realtime_start::String`: the first day of the real-time period, written as `"YYYY-MM-DD"`. The real-time period selects
+  the vintage of the data that we see, i.e., the data as it stood on those days. When the field is empty, FRED uses today's
+  date.
+- `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
+  today's date.
+- `tag_names::String`: the tag names that a series must all have, separated by semicolons, e.g., `"services;quarterly"`. FRED
+  requires this field. The returned tags are the tags that these series have in addition.
+- `exclude_tag_names::String`: the tag names that a series must not have, separated by semicolons. Set this field together
+  with `tag_names`. When the field is empty, FRED does not exclude by tag.
+- `tag_group_id::String`: the group of tags to return: `"freq"` (frequency), `"gen"` (general or concept), `"geo"`
+  (geography), `"geot"` (geography type), `"rls"` (release), `"seas"` (seasonal adjustment), or `"src"` (source). When the
+  field is empty, FRED returns the tags of every group.
+- `search_text::String`: the words to match against the tag names and the tag notes. When the field is empty, FRED does
+  not filter the tags by text.
+- `limit::Int64`: the largest number of tags to return, between `1` and `1000`. When the field is `0`, FRED uses `1000`.
+- `offset::Int64`: the number of results to skip, starting at `0`. When the field is `0`, FRED skips none.
+- `order_by::String`: the attribute to sort the results by: `"series_count"`, `"popularity"`, `"created"`, `"name"`, or
+  `"group_id"`. When the field is empty, FRED uses `"series_count"`.
+- `sort_order::String`: the order of the results: `"asc"` (ascending) or `"desc"` (descending). When the field is empty, FRED
+  uses `"asc"`.
+
+### Constructors
+- `MyFredCategoryRelatedTagsEndpointModel(; apikey::String = "", category_id::Int64 = 0, realtime_start::String = "",
+  realtime_end::String = "", tag_names::String = "", exclude_tag_names::String = "", tag_group_id::String = "",
+  search_text::String = "", limit::Int64 = 0, offset::Int64 = 0, order_by::String = "", sort_order::String = "")`: returns a
+  new `MyFredCategoryRelatedTagsEndpointModel` instance. Every argument is a keyword argument.
+"""
+mutable struct MyFredCategoryRelatedTagsEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    category_id::Int64
+    realtime_start::String
+    realtime_end::String
+    tag_names::String
+    exclude_tag_names::String
+    tag_group_id::String
+    search_text::String
+    limit::Int64
+    offset::Int64
+    order_by::String
+    sort_order::String
+
+    # methods -
+    MyFredCategoryRelatedTagsEndpointModel(;
+        apikey::String = "",
+        category_id::Int64 = 0,
+        realtime_start::String = "",
+        realtime_end::String = "",
+        tag_names::String = "",
+        exclude_tag_names::String = "",
+        tag_group_id::String = "",
+        search_text::String = "",
+        limit::Int64 = 0,
+        offset::Int64 = 0,
+        order_by::String = "",
+        sort_order::String = "") = new(
+            apikey, category_id, realtime_start, realtime_end, tag_names, exclude_tag_names, tag_group_id, search_text, limit, offset, order_by, sort_order);
+end

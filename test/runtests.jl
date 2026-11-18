@@ -21,3 +21,7 @@ end
 @testset "Series endpoints" begin
     include("test_series.jl")
 end
+
+@testset "Categories endpoints" begin
+    include("test_categories.jl")
+end
