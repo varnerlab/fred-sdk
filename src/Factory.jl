@@ -1233,6 +1233,305 @@ function url(base::String, model::MyFredReleaseTablesEndpointModel)::String
     return url_string;
 end
 
+# --- SOURCES ENDPOINTS ---------------------------------------------------------------------------------------- #
+
+"""
+    url(base::String, model::MyFredSourcesEndpointModel) -> String
+
+Build the URL string for the `fred/sources` endpoint of the FRED API.
+An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns every source of economic data: its identifier, name, and, when FRED has them, its link and notes.
+The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
+A field at its empty value stays out of the URL.
+
+### Arguments
+- `base::String`: the base URL of the FRED API, i.e., `"https://api.stlouisfed.org"`.
+- `model::MyFredSourcesEndpointModel`: the endpoint model that holds the API key and the parameters of the call.
+
+### Returns
+- `String`: the complete URL string. The URL holds the API key, so do not print it or share it.
+
+### Throws
+- This function does not throw an error.
+
+### Example
+```julia
+model = MyFredSourcesEndpointModel(apikey = apikey, limit = 3);
+request_url = url("https://api.stlouisfed.org", model);
+```
+"""
+function url(base::String, model::MyFredSourcesEndpointModel)::String
+
+    # initialize: the list of key=value parameters for the query string -
+    parameters = Vector{Pair{String,String}}();
+
+    # add the parameters of this endpoint. A parameter at its empty value stays out of the URL -
+    _add_parameter!(parameters, "realtime_start", model.realtime_start);
+    _add_parameter!(parameters, "realtime_end", model.realtime_end);
+    _add_parameter!(parameters, "limit", model.limit);
+    _add_parameter!(parameters, "offset", model.offset);
+    _add_parameter!(parameters, "order_by", model.order_by);
+    _add_parameter!(parameters, "sort_order", model.sort_order);
+
+    # every request carries the API key, and asks FRED for JSON text (the default of FRED is XML) -
+    _add_parameter!(parameters, "api_key", model.apikey);
+    _add_parameter!(parameters, "file_type", "json");
+
+    # build the URL string: base + path + ? + query string -
+    url_string = _build_url(base, "/fred/sources", parameters);
+
+    # return the URL string -
+    return url_string;
+end
+
+"""
+    url(base::String, model::MyFredSourceEndpointModel) -> String
+
+Build the URL string for the `fred/source` endpoint of the FRED API.
+An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns one source of economic data: its identifier, name, and, when FRED has them, its link and notes.
+The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
+A field at its empty value stays out of the URL.
+
+### Arguments
+- `base::String`: the base URL of the FRED API, i.e., `"https://api.stlouisfed.org"`.
+- `model::MyFredSourceEndpointModel`: the endpoint model that holds the API key and the parameters of the call.
+
+### Returns
+- `String`: the complete URL string. The URL holds the API key, so do not print it or share it.
+
+### Throws
+- This function does not throw an error.
+
+### Example
+```julia
+model = MyFredSourceEndpointModel(apikey = apikey, source_id = 1);
+request_url = url("https://api.stlouisfed.org", model);
+```
+"""
+function url(base::String, model::MyFredSourceEndpointModel)::String
+
+    # initialize: the list of key=value parameters for the query string -
+    parameters = Vector{Pair{String,String}}();
+
+    # add the parameters of this endpoint. A parameter at its empty value stays out of the URL -
+    _add_parameter!(parameters, "source_id", model.source_id);
+    _add_parameter!(parameters, "realtime_start", model.realtime_start);
+    _add_parameter!(parameters, "realtime_end", model.realtime_end);
+
+    # every request carries the API key, and asks FRED for JSON text (the default of FRED is XML) -
+    _add_parameter!(parameters, "api_key", model.apikey);
+    _add_parameter!(parameters, "file_type", "json");
+
+    # build the URL string: base + path + ? + query string -
+    url_string = _build_url(base, "/fred/source", parameters);
+
+    # return the URL string -
+    return url_string;
+end
+
+"""
+    url(base::String, model::MyFredSourceReleasesEndpointModel) -> String
+
+Build the URL string for the `fred/source/releases` endpoint of the FRED API.
+An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the releases of economic data that one source publishes.
+The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
+A field at its empty value stays out of the URL.
+
+### Arguments
+- `base::String`: the base URL of the FRED API, i.e., `"https://api.stlouisfed.org"`.
+- `model::MyFredSourceReleasesEndpointModel`: the endpoint model that holds the API key and the parameters of the call.
+
+### Returns
+- `String`: the complete URL string. The URL holds the API key, so do not print it or share it.
+
+### Throws
+- This function does not throw an error.
+
+### Example
+```julia
+model = MyFredSourceReleasesEndpointModel(apikey = apikey, source_id = 1, limit = 3);
+request_url = url("https://api.stlouisfed.org", model);
+```
+"""
+function url(base::String, model::MyFredSourceReleasesEndpointModel)::String
+
+    # initialize: the list of key=value parameters for the query string -
+    parameters = Vector{Pair{String,String}}();
+
+    # add the parameters of this endpoint. A parameter at its empty value stays out of the URL -
+    _add_parameter!(parameters, "source_id", model.source_id);
+    _add_parameter!(parameters, "realtime_start", model.realtime_start);
+    _add_parameter!(parameters, "realtime_end", model.realtime_end);
+    _add_parameter!(parameters, "limit", model.limit);
+    _add_parameter!(parameters, "offset", model.offset);
+    _add_parameter!(parameters, "order_by", model.order_by);
+    _add_parameter!(parameters, "sort_order", model.sort_order);
+
+    # every request carries the API key, and asks FRED for JSON text (the default of FRED is XML) -
+    _add_parameter!(parameters, "api_key", model.apikey);
+    _add_parameter!(parameters, "file_type", "json");
+
+    # build the URL string: base + path + ? + query string -
+    url_string = _build_url(base, "/fred/source/releases", parameters);
+
+    # return the URL string -
+    return url_string;
+end
+
+# --- TAGS ENDPOINTS ------------------------------------------------------------------------------------------- #
+
+"""
+    url(base::String, model::MyFredTagsEndpointModel) -> String
+
+Build the URL string for the `fred/tags` endpoint of the FRED API.
+An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the tags of FRED. A tag is a word that describes a series, e.g., its frequency or its geography.
+The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
+A field at its empty value stays out of the URL.
+
+### Arguments
+- `base::String`: the base URL of the FRED API, i.e., `"https://api.stlouisfed.org"`.
+- `model::MyFredTagsEndpointModel`: the endpoint model that holds the API key and the parameters of the call.
+
+### Returns
+- `String`: the complete URL string. The URL holds the API key, so do not print it or share it.
+
+### Throws
+- This function does not throw an error.
+
+### Example
+```julia
+model = MyFredTagsEndpointModel(apikey = apikey, limit = 3);
+request_url = url("https://api.stlouisfed.org", model);
+```
+"""
+function url(base::String, model::MyFredTagsEndpointModel)::String
+
+    # initialize: the list of key=value parameters for the query string -
+    parameters = Vector{Pair{String,String}}();
+
+    # add the parameters of this endpoint. A parameter at its empty value stays out of the URL -
+    _add_parameter!(parameters, "realtime_start", model.realtime_start);
+    _add_parameter!(parameters, "realtime_end", model.realtime_end);
+    _add_parameter!(parameters, "tag_names", model.tag_names);
+    _add_parameter!(parameters, "tag_group_id", model.tag_group_id);
+    _add_parameter!(parameters, "search_text", model.search_text);
+    _add_parameter!(parameters, "limit", model.limit);
+    _add_parameter!(parameters, "offset", model.offset);
+    _add_parameter!(parameters, "order_by", model.order_by);
+    _add_parameter!(parameters, "sort_order", model.sort_order);
+
+    # every request carries the API key, and asks FRED for JSON text (the default of FRED is XML) -
+    _add_parameter!(parameters, "api_key", model.apikey);
+    _add_parameter!(parameters, "file_type", "json");
+
+    # build the URL string: base + path + ? + query string -
+    url_string = _build_url(base, "/fred/tags", parameters);
+
+    # return the URL string -
+    return url_string;
+end
+
+"""
+    url(base::String, model::MyFredRelatedTagsEndpointModel) -> String
+
+Build the URL string for the `fred/related_tags` endpoint of the FRED API.
+An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the other tags that the series matching `tag_names` also carry.
+The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
+A field at its empty value stays out of the URL.
+
+### Arguments
+- `base::String`: the base URL of the FRED API, i.e., `"https://api.stlouisfed.org"`.
+- `model::MyFredRelatedTagsEndpointModel`: the endpoint model that holds the API key and the parameters of the call.
+
+### Returns
+- `String`: the complete URL string. The URL holds the API key, so do not print it or share it.
+
+### Throws
+- This function does not throw an error.
+
+### Example
+```julia
+model = MyFredRelatedTagsEndpointModel(apikey = apikey, tag_names = "monetary aggregates;weekly", limit = 3);
+request_url = url("https://api.stlouisfed.org", model);
+```
+"""
+function url(base::String, model::MyFredRelatedTagsEndpointModel)::String
+
+    # initialize: the list of key=value parameters for the query string -
+    parameters = Vector{Pair{String,String}}();
+
+    # add the parameters of this endpoint. A parameter at its empty value stays out of the URL -
+    _add_parameter!(parameters, "realtime_start", model.realtime_start);
+    _add_parameter!(parameters, "realtime_end", model.realtime_end);
+    _add_parameter!(parameters, "tag_names", model.tag_names);
+    _add_parameter!(parameters, "exclude_tag_names", model.exclude_tag_names);
+    _add_parameter!(parameters, "tag_group_id", model.tag_group_id);
+    _add_parameter!(parameters, "search_text", model.search_text);
+    _add_parameter!(parameters, "limit", model.limit);
+    _add_parameter!(parameters, "offset", model.offset);
+    _add_parameter!(parameters, "order_by", model.order_by);
+    _add_parameter!(parameters, "sort_order", model.sort_order);
+
+    # every request carries the API key, and asks FRED for JSON text (the default of FRED is XML) -
+    _add_parameter!(parameters, "api_key", model.apikey);
+    _add_parameter!(parameters, "file_type", "json");
+
+    # build the URL string: base + path + ? + query string -
+    url_string = _build_url(base, "/fred/related_tags", parameters);
+
+    # return the URL string -
+    return url_string;
+end
+
+"""
+    url(base::String, model::MyFredTagsSeriesEndpointModel) -> String
+
+Build the URL string for the `fred/tags/series` endpoint of the FRED API.
+An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the series that match every tag in `tag_names`.
+The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
+A field at its empty value stays out of the URL.
+
+### Arguments
+- `base::String`: the base URL of the FRED API, i.e., `"https://api.stlouisfed.org"`.
+- `model::MyFredTagsSeriesEndpointModel`: the endpoint model that holds the API key and the parameters of the call.
+
+### Returns
+- `String`: the complete URL string. The URL holds the API key, so do not print it or share it.
+
+### Throws
+- This function does not throw an error.
+
+### Example
+```julia
+model = MyFredTagsSeriesEndpointModel(apikey = apikey, tag_names = "slovenia;food", limit = 3);
+request_url = url("https://api.stlouisfed.org", model);
+```
+"""
+function url(base::String, model::MyFredTagsSeriesEndpointModel)::String
+
+    # initialize: the list of key=value parameters for the query string -
+    parameters = Vector{Pair{String,String}}();
+
+    # add the parameters of this endpoint. A parameter at its empty value stays out of the URL -
+    _add_parameter!(parameters, "tag_names", model.tag_names);
+    _add_parameter!(parameters, "exclude_tag_names", model.exclude_tag_names);
+    _add_parameter!(parameters, "realtime_start", model.realtime_start);
+    _add_parameter!(parameters, "realtime_end", model.realtime_end);
+    _add_parameter!(parameters, "limit", model.limit);
+    _add_parameter!(parameters, "offset", model.offset);
+    _add_parameter!(parameters, "order_by", model.order_by);
+    _add_parameter!(parameters, "sort_order", model.sort_order);
+
+    # every request carries the API key, and asks FRED for JSON text (the default of FRED is XML) -
+    _add_parameter!(parameters, "api_key", model.apikey);
+    _add_parameter!(parameters, "file_type", "json");
+
+    # build the URL string: base + path + ? + query string -
+    url_string = _build_url(base, "/fred/tags/series", parameters);
+
+    # return the URL string -
+    return url_string;
+end
+
 # --- PRIVATE METHODS BELOW HERE ------------------------------------------------------------------------------- #
 
 """

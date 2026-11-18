@@ -29,3 +29,7 @@ end
 @testset "Releases endpoints" begin
     include("test_releases.jl")
 end
+
+@testset "Sources and tags endpoints" begin
+    include("test_sources_tags.jl")
+end
