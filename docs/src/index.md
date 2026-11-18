@@ -2,6 +2,8 @@
 
 FRED (Federal Reserve Economic Data) is the database of economic data of the Federal Reserve Bank of St. Louis, and the FRED API is the web service that returns that data. FredAPI is a Julia package that calls the FRED API.
 
+This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. By using FredAPI, you agree to the [FRED® API Terms of Use](https://fred.stlouisfed.org/docs/api/terms_of_use.html).
+
 FRED organizes its data with five kinds of objects:
 
 - A series is a sequence of observations of one economic quantity over time, such as the daily Henry Hub natural gas spot price. Each observation is a date and a value.

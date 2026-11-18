@@ -2,6 +2,8 @@
 
 FredAPI is a Julia package that calls the 36 endpoints of the FRED (Federal Reserve Economic Data) API and turns each response into a dictionary or a `DataFrame`.
 
+This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis. By using FredAPI, you agree to the [FRED® API Terms of Use](https://fred.stlouisfed.org/docs/api/terms_of_use.html).
+
 ## Installation
 
 Install FredAPI from its GitHub repository. In the Julia package manager, run:
