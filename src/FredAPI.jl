@@ -23,7 +23,7 @@ module FredAPI
     export MyFredTagsEndpointModel, MyFredRelatedTagsEndpointModel, MyFredTagsSeriesEndpointModel
     export MyFredMapsShapesEndpointModel, MyFredMapsSeriesGroupEndpointModel, MyFredMapsSeriesDataEndpointModel
     export MyFredMapsRegionalDataEndpointModel, MyFredV2ReleaseObservationsEndpointModel
-    export url
+    export url, api
 
     # load the package code, in this order -
     include("Types.jl")   # the endpoint models

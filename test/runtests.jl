@@ -38,3 +38,7 @@ end
 @testset "Maps and version 2 endpoints" begin
     include("test_maps_v2.jl")
 end
+
+@testset "Network and the default handler" begin
+    include("test_network.jl")
+end
