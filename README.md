@@ -12,7 +12,13 @@ Install FredAPI from its GitHub repository. In the Julia package manager, run:
 
 ## Configuration
 
-You need a FRED API key. Copy `conf/Configuration-template.toml` to `conf/Configuration.toml`, and paste your key between the quotes on the `apikey` line. The file `conf/Configuration.toml` is listed in `.gitignore`, so that git does not track your key.
+You need a FRED API key, which you request on the [API key page of FRED](https://fred.stlouisfed.org/docs/api/api_key.html). Create the file `conf/Configuration.toml` in your project folder with these lines, paste your key between the quotes on the `apikey` line, and add the file to your `.gitignore` file, so that git does not track your key:
+
+```toml
+[connection]
+apikey = "paste-your-FRED-API-key-here"
+baseurl = "https://api.stlouisfed.org"
+```
 
 ## Example
 
@@ -21,7 +27,7 @@ We'll search for a series, then fetch the observations of the first series that 
 ```julia
 using FredAPI
 connection = read_configuration("conf/Configuration.toml");
-search = MyFredSeriesSearchEndpointModel(apikey = connection["apikey"], search_text = "real gross national product", limit = 1);
+search = MyFredSeriesSearchEndpointModel(apikey = connection["apikey"], search_text = "real gross domestic product", limit = 1);
 found = api(MyFredSeriesSearchEndpointModel, url(connection["baseurl"], search); handler = process_search_response_dataframe);
 model = MyFredSeriesObservationsEndpointModel(apikey = connection["apikey"], series_id = found[1, :id]);
 request_url = url(connection["baseurl"], model);
