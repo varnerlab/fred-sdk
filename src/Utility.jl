@@ -18,7 +18,7 @@ The file is written in the TOML format. Its `[connection]` section has two entri
 - `Dict{String,Any}`: the `[connection]` section as a dictionary with the keys `"apikey"` and `"baseurl"`.
 
 ### Throws
-- `ArgumentError`: when the file does not exist or cannot be read, when an entry is not there, or when the key is not
+- `ArgumentError`: when the file does not exist, when the file is not valid TOML, when an entry is not there, or when the key is not
   32 characters long. The messages never show the contents of the file.
 
 ### Example
@@ -37,11 +37,17 @@ function read_configuration(path::String)::Dict{String,Any}
     end
 
     # read the file: each [section] of a TOML file becomes a dictionary. The error of the TOML
-    # reader shows the line that it could not read, which may hold the key, so we throw our own error -
+    # reader shows the line that it could not read, which may hold the key. We only record that the
+    # read failed, and we throw our own error after the catch block, so no cause is chained to it -
     configuration = nothing;
     try
         configuration = TOML.parsefile(path);
     catch
+        configuration = nothing;
+    end
+
+    # check: did the read fail?
+    if (isnothing(configuration) == true)
         throw(ArgumentError("We cannot read the configuration file. Check that the key is between the quotes " *
             "on the apikey line, and compare the file with conf/Configuration-template.toml in the package repository."));
     end

@@ -9,13 +9,19 @@ function write_config(dir::String, name::String, text::String)::String
     return path;
 end
 
-# check that reading a file throws an ArgumentError that does not show the key -
+# check that reading a file throws an ArgumentError, and that neither the message nor a chained cause shows the key -
 function check_error(path::String)
     caught = nothing;
     try
         read_configuration(path);
     catch e
         caught = e;
+
+        # the full display of the error stack must hold one error, and must not show the key -
+        @test length(current_exceptions()) == 1;
+        full_display = sprint(Base.display_error, current_exceptions());
+        @test occursin(KEY, full_display) == false;
+        @test occursin(KEY[1:31], full_display) == false;
     end
     @test caught isa ArgumentError;
     message = sprint(showerror, caught);
@@ -34,6 +40,7 @@ connection = read_configuration(good);
 # each broken file throws an ArgumentError -
 check_error(joinpath(dir, "missing.toml"));
 check_error(write_config(dir, "notoml.toml", "this is [not toml = \"$(KEY)\"\n"));
+check_error(write_config(dir, "unquoted.toml", "[connection]\napikey = $(KEY)\nbaseurl = \"$(BASE)\"\n"));
 check_error(write_config(dir, "nosection.toml", "[other]\napikey = \"$(KEY)\"\nbaseurl = \"$(BASE)\"\n"));
 check_error(write_config(dir, "nokey.toml", "[connection]\nbaseurl = \"$(BASE)\"\n"));
 check_error(write_config(dir, "nobase.toml", "[connection]\napikey = \"$(KEY)\"\n"));
