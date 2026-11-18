@@ -1,8 +1,7 @@
 # =============================================================================
-# Handler.jl: the functions that turn each JSON response into a DataFrame.
+# Handler.jl: the functions that turn each JSON response into a dictionary or a DataFrame.
 # =============================================================================
 # --- PUBLIC METHODS BELOW HERE -------------------------------------------------------------------------------- #
-# This handler overlaps with `process_series_response_dataframe`; we keep it unchanged, with its six columns.
 """
     process_search_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
 
@@ -62,7 +61,6 @@ function process_search_response_dataframe(model::Type{T}, response::String)::Da
     return dataframe
 end
 
-# This handler does the same "." check as `_parse_value`; we keep it unchanged.
 """
     process_observations_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
 
@@ -742,13 +740,13 @@ end
 """
     process_release_observations_response_dataframe(model::Type{T}, response::String)::DataFrame where T <: AbstractFredEndpointModel
 
-Process the JSON response string from the version 2 `fred/release/observations` endpoint of the FRED API.
+Process the JSON response string from the version 2 `fred/v2/release/observations` endpoint of the FRED API.
 We parse the response string, visit each series, and visit each observation of the series.
 We return the observations of all series as one `DataFrame`.
 
 ### Arguments
 - `model::Type{T}`: the endpoint model type. Must be a subtype of `AbstractFredEndpointModel`.
-- `response::String`: the JSON response string from the version 2 `fred/release/observations` endpoint.
+- `response::String`: the JSON response string from the version 2 `fred/v2/release/observations` endpoint.
 
 ### Returns
 - `DataFrame`: a table with one row for each observation, in the order of the response. The columns are:
@@ -763,7 +761,7 @@ We return the observations of all series as one `DataFrame`.
 
 ### Example
 ```julia
-model = MyFredV2ReleaseObservationsEndpointModel(apikey = apikey, release_id = 52);
+model = MyFredV2ReleaseObservationsEndpointModel(apikey = apikey, release_id = 52, limit = 500);
 table = api(MyFredV2ReleaseObservationsEndpointModel, url("https://api.stlouisfed.org", model); handler = process_release_observations_response_dataframe);
 ```
 """

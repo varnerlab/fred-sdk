@@ -10,7 +10,7 @@ FRED organizes its data with five kinds of objects:
 - A release is a set of series that one or more sources publish together, such as Gross Domestic Product.
 - A tag is a short label that describes a series, such as `"usa"` for its geography or `"nsa"` for not seasonally adjusted.
 
-Each endpoint of the FRED API answers one kind of request. For example, the `fred/series/observations` endpoint returns the observations of one series. FredAPI calls 36 endpoints: the 31 endpoints of version 1, the 4 endpoints of the Maps API, which returns data by region, and the `fred/v2/release/observations` endpoint of version 2. FredAPI turns each response into a dictionary or a `DataFrame`.
+Each endpoint of the FRED API answers one kind of request. For example, the `fred/series/observations` endpoint returns the observations of one series. FredAPI calls 36 endpoints: the 31 endpoints of version 1, the 4 endpoints of the Maps API, which returns data by region, and the `fred/v2/release/observations` endpoint of version 2.
 
 ## Installation
 

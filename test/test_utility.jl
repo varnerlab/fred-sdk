@@ -25,6 +25,7 @@ function check_error(path::String)
     message = sprint(showerror, caught);
     @test occursin(KEY, message) == false;
     @test occursin(KEY[1:31], message) == false;
+    return message;
 end
 
 dir = mktempdir();
@@ -36,7 +37,8 @@ connection = read_configuration(good);
 @test connection["baseurl"] == BASE;
 
 # each broken file throws an ArgumentError -
-check_error(joinpath(dir, "missing.toml"));
+missing_message = check_error(joinpath(dir, "missing.toml"));
+@test occursin(abspath(joinpath(dir, "missing.toml")), missing_message);
 check_error(write_config(dir, "notoml.toml", "this is [not toml = \"$(KEY)\"\n"));
 check_error(write_config(dir, "unquoted.toml", "[connection]\napikey = $(KEY)\nbaseurl = \"$(BASE)\"\n"));
 check_error(write_config(dir, "nosection.toml", "[other]\napikey = \"$(KEY)\"\nbaseurl = \"$(BASE)\"\n"));

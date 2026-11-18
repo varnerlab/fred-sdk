@@ -48,7 +48,7 @@ url(::String, ::MyFredSeriesObservationsEndpointModel)
 
 ## `fred/series/release`
 
-The `fred/series/release` endpoint returns the release that holds one series, such as `"IRA"`.
+The `fred/series/release` endpoint returns the release that holds one series, such as the series `"IRA"` of the H.6 Money Stock Measures release.
 
 ```julia
 model = MyFredSeriesReleaseEndpointModel(apikey = apikey, series_id = "IRA");

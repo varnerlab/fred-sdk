@@ -1,4 +1,4 @@
-# test_handlers.jl: tests for the table handlers of the version 1 lists -
+# test_handlers.jl: tests for the table handlers of the version 1 lists, the release tables, the maps, and version 2 -
 import JSON
 using DataFrames
 using Dates

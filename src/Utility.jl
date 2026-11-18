@@ -19,7 +19,7 @@ The file is written in the TOML format. Its `[connection]` section has two entri
 
 ### Throws
 - `ArgumentError`: when the file does not exist, when the file is not valid TOML, when an entry is not there, or when the key is not
-  32 characters long. The messages never show the contents of the file.
+  32 characters long. The messages never show the contents of the file. The message for a missing file names the absolute path that it checked.
 
 ### Example
 ```julia
@@ -32,8 +32,8 @@ function read_configuration(path::String)::Dict{String,Any}
 
     # check: does the file exist?
     if (isfile(path) == false)
-        throw(ArgumentError("We cannot find the configuration file. Copy conf/Configuration-template.toml " *
-            "in the package repository to conf/Configuration.toml, and paste your FRED API key into the new file."));
+        throw(ArgumentError("We cannot find the configuration file $(abspath(path)). " *
+            "Create it with the lines of conf/Configuration-template.toml in the package repository."));
     end
 
     # read the file: each [section] of a TOML file becomes a dictionary. The error of the TOML
@@ -70,11 +70,11 @@ function read_configuration(path::String)::Dict{String,Any}
     # check: a FRED API key has 32 characters. The message does not show the key -
     apikey = connection["apikey"];
     if (isa(apikey, String) == false)
-        throw(ArgumentError("The apikey entry is not text. Paste your key between the quotes on the apikey line of conf/Configuration.toml."));
+        throw(ArgumentError("The apikey entry is not text. Paste your key between the quotes on the apikey line of $(abspath(path))."));
     end
     if (length(apikey) != 32)
         throw(ArgumentError("The apikey entry is not a FRED API key: a key has 32 characters, and this entry has $(length(apikey)). " *
-            "Paste your key between the quotes on the apikey line of conf/Configuration.toml."));
+            "Paste your key between the quotes on the apikey line of $(abspath(path))."));
     end
 
     # return the connection settings -

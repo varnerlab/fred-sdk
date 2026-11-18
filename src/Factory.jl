@@ -797,7 +797,7 @@ end
     url(base::String, model::MyFredReleasesEndpointModel) -> String
 
 Build the URL string for the `fred/releases` endpoint of the FRED API.
-An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns every release of economic data: its identifier, name, and whether FRED publishes a press release for it.
+An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns every release of economic data: its identifier, name, and whether the release is a press release.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
 
@@ -894,7 +894,7 @@ end
     url(base::String, model::MyFredReleaseEndpointModel) -> String
 
 Build the URL string for the `fred/release` endpoint of the FRED API.
-An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns one release of economic data: its identifier, name, and whether FRED publishes a press release for it.
+An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns one release of economic data: its identifier, name, and whether the release is a press release.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
 
@@ -1537,7 +1537,7 @@ end
 """
     url(base::String, model::MyFredMapsShapesEndpointModel) -> String
 
-Build the URL string for the `/geofred/shapes/file` endpoint of the FRED API.
+Build the URL string for the `geofred/shapes/file` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the boundaries of the regions of one shape type, as GeoJSON.
 The URL lists the `shape` parameter, then the API key. This endpoint takes no format parameter, so the URL adds none.
 A field at its empty value stays out of the URL.
@@ -1579,7 +1579,7 @@ end
 """
     url(base::String, model::MyFredMapsSeriesGroupEndpointModel) -> String
 
-Build the URL string for the `/geofred/series/group` endpoint of the FRED API.
+Build the URL string for the `geofred/series/group` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the meta information of the series group that a regional series belongs to.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -1622,7 +1622,7 @@ end
 """
     url(base::String, model::MyFredMapsSeriesDataEndpointModel) -> String
 
-Build the URL string for the `/geofred/series/data` endpoint of the FRED API.
+Build the URL string for the `geofred/series/data` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the regional data of one series, on one date or over a range of dates.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -1667,7 +1667,7 @@ end
 """
     url(base::String, model::MyFredMapsRegionalDataEndpointModel) -> String
 
-Build the URL string for the `/geofred/regional/data` endpoint of the FRED API.
+Build the URL string for the `geofred/regional/data` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the regional data of one series group, for each region of one region type.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `file_type=json`, which asks FRED for JSON text.
 A field at its empty value stays out of the URL.
@@ -1720,7 +1720,7 @@ end
 """
     url(base::String, model::MyFredV2ReleaseObservationsEndpointModel) -> String
 
-Build the URL string for the `/fred/v2/release/observations` endpoint of the FRED API.
+Build the URL string for the `fred/v2/release/observations` endpoint of the FRED API.
 An HTTP GET call to this URL calls the endpoint with the parameters that the model holds. This endpoint returns the observations of every series in one release, in pages.
 The URL lists the parameters in the order of the fields of the model, then the API key, then `format=json`, which asks FRED for JSON text. Version 2 uses `format` in place of `file_type`.
 A field at its empty value stays out of the URL.

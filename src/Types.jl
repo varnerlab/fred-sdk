@@ -15,7 +15,7 @@ abstract type AbstractFredEndpointModel end
 """
     mutable struct MyFredSeriesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series.html.
+Endpoint model for the FRED `fred/series` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series.html>.
 This endpoint returns the description of one economic data series: its title, units, frequency, seasonal adjustment, and date range.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -52,7 +52,7 @@ end
 """
     mutable struct MyFredSeriesCategoriesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/categories` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_categories.html.
+Endpoint model for the FRED `fred/series/categories` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_categories.html>.
 This endpoint returns the categories that hold one economic data series.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -90,7 +90,7 @@ end
 """
     mutable struct MyFredSeriesObservationsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/observations` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_observations.html.
+Endpoint model for the FRED `fred/series/observations` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_observations.html>.
 This endpoint returns the observations (the data values) of one economic data series.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -177,7 +177,7 @@ end
 """
     mutable struct MyFredSeriesReleaseEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/release` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_release.html.
+Endpoint model for the FRED `fred/series/release` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_release.html>.
 This endpoint returns the release that publishes one economic data series.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -215,7 +215,7 @@ end
 """
     mutable struct MyFredSeriesSearchEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/search` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_search.html.
+Endpoint model for the FRED `fred/series/search` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_search.html>.
 This endpoint returns the economic data series that match a search text.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -223,7 +223,7 @@ Every field is at its empty value by default. A field at its empty value (`""` o
 - `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
 - `search_text::String`: the words to search for, e.g., `"natural gas"`. FRED requires this field. The search text can hold
   spaces and other characters, because `url` encodes them.
-- `search_type::String`: what the search text matches: `"full_text"` (the words of the series title, units, and tags) or
+- `search_type::String`: what the search text matches: `"full_text"` or
   `"series_id"` (the series identifiers). When the field is empty, FRED uses `"full_text"`.
 - `realtime_start::String`: the first day of the real-time period, written as `"YYYY-MM-DD"`. The real-time period selects
   the vintage of the data that we see, i.e., the data as it stood on those days. When the field is empty, FRED uses today's
@@ -292,7 +292,7 @@ end
 """
     mutable struct MyFredSeriesSearchTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/search/tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_search_tags.html.
+Endpoint model for the FRED `fred/series/search/tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_search_tags.html>.
 This endpoint returns the tags of the series that match a search text.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -358,7 +358,7 @@ end
 """
     mutable struct MyFredSeriesSearchRelatedTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/search/related_tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_search_related_tags.html.
+Endpoint model for the FRED `fred/series/search/related_tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_search_related_tags.html>.
 This endpoint returns the tags that are related to a set of tags, among the series that match a search text.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -371,7 +371,7 @@ Every field is at its empty value by default. A field at its empty value (`""` o
 - `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
   today's date.
 - `tag_names::String`: the tag names that a series must all have, separated by semicolons, e.g., `"30-year;frb"`. FRED
-  requires this field. The returned tags are the tags that these series have in addition.
+  requires this field.
 - `exclude_tag_names::String`: the tag names that a series must not have, separated by semicolons. Set this field together
   with `tag_names`. When the field is empty, FRED does not exclude by tag.
 - `tag_group_id::String`: the group of tags to return: `"freq"` (frequency), `"gen"` (general or concept), `"geo"`
@@ -428,7 +428,7 @@ end
 """
     mutable struct MyFredSeriesTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_tags.html.
+Endpoint model for the FRED `fred/series/tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_tags.html>.
 This endpoint returns the tags of one economic data series.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -474,7 +474,7 @@ end
 """
     mutable struct MyFredSeriesUpdatesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/updates` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_updates.html.
+Endpoint model for the FRED `fred/series/updates` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_updates.html>.
 This endpoint returns the economic data series, sorted by the time that FRED last updated them, most recent first.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -529,7 +529,7 @@ end
 """
     mutable struct MyFredSeriesVintageDatesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/series/vintagedates` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html.
+Endpoint model for the FRED `fred/series/vintagedates` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/series_vintagedates.html>.
 This endpoint returns the dates on which FRED revised the data of one economic data series, or added data to it.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -580,7 +580,7 @@ end
 """
     mutable struct MyFredCategoryEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/category` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category.html.
+Endpoint model for the FRED `fred/category` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/category.html>.
 This endpoint returns one category: its identifier, name, and parent category.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -608,7 +608,7 @@ end
 """
     mutable struct MyFredCategoryChildrenEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/category/children` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_children.html.
+Endpoint model for the FRED `fred/category/children` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/category_children.html>.
 This endpoint returns the child categories of one category.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -646,7 +646,7 @@ end
 """
     mutable struct MyFredCategoryRelatedEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/category/related` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_related.html.
+Endpoint model for the FRED `fred/category/related` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/category_related.html>.
 This endpoint returns the categories that are related to one category. Most categories have no related categories.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -684,7 +684,7 @@ end
 """
     mutable struct MyFredCategorySeriesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/category/series` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_series.html.
+Endpoint model for the FRED `fred/category/series` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/category_series.html>.
 This endpoint returns the economic data series that belong to one category.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -754,7 +754,7 @@ end
 """
     mutable struct MyFredCategoryTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/category/tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_tags.html.
+Endpoint model for the FRED `fred/category/tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/category_tags.html>.
 This endpoint returns the tags of the series that belong to one category.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -820,7 +820,7 @@ end
 """
     mutable struct MyFredCategoryRelatedTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/category/related_tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/category_related_tags.html.
+Endpoint model for the FRED `fred/category/related_tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/category_related_tags.html>.
 This endpoint returns the tags that are related to a set of tags, among the series that belong to one category.
 Every field is at its empty value by default. A field at its empty value (`""` or `0`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -833,7 +833,7 @@ Every field is at its empty value by default. A field at its empty value (`""` o
 - `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
   today's date.
 - `tag_names::String`: the tag names that a series must all have, separated by semicolons, e.g., `"services;quarterly"`. FRED
-  requires this field. The returned tags are the tags that these series have in addition.
+  requires this field.
 - `exclude_tag_names::String`: the tag names that a series must not have, separated by semicolons. Set this field together
   with `tag_names`. When the field is empty, FRED does not exclude by tag.
 - `tag_group_id::String`: the group of tags to return: `"freq"` (frequency), `"gen"` (general or concept), `"geo"`
@@ -892,8 +892,8 @@ end
 """
     mutable struct MyFredReleasesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/releases` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/releases.html.
-This endpoint returns every release of economic data: its identifier, name, and whether FRED publishes a press release for it.
+Endpoint model for the FRED `fred/releases` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/releases.html>.
+This endpoint returns every release of economic data: its identifier, name, and whether the release is a press release.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
 ### Fields
@@ -940,7 +940,7 @@ end
 """
     mutable struct MyFredReleasesDatesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/releases/dates` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/releases_dates.html.
+Endpoint model for the FRED `fred/releases/dates` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/releases_dates.html>.
 This endpoint returns the release dates of every release of economic data. Each record holds a release identifier, a release name, and a date.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -993,8 +993,8 @@ end
 """
     mutable struct MyFredReleaseEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/release` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release.html.
-This endpoint returns one release of economic data: its identifier, name, and whether FRED publishes a press release for it.
+Endpoint model for the FRED `fred/release` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/release.html>.
+This endpoint returns one release of economic data: its identifier, name, and whether the release is a press release.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
 ### Fields
@@ -1029,7 +1029,7 @@ end
 """
     mutable struct MyFredReleaseDatesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/release/dates` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_dates.html.
+Endpoint model for the FRED `fred/release/dates` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/release_dates.html>.
 This endpoint returns the release dates of one release of economic data. Each record holds a release identifier and a date.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1081,7 +1081,7 @@ end
 """
     mutable struct MyFredReleaseSeriesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/release/series` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_series.html.
+Endpoint model for the FRED `fred/release/series` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/release_series.html>.
 This endpoint returns the economic data series that belong to one release.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1150,7 +1150,7 @@ end
 """
     mutable struct MyFredReleaseSourcesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/release/sources` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_sources.html.
+Endpoint model for the FRED `fred/release/sources` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/release_sources.html>.
 This endpoint returns the sources of the data of one release. The results are not paged.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1187,7 +1187,7 @@ end
 """
     mutable struct MyFredReleaseTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/release/tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_tags.html.
+Endpoint model for the FRED `fred/release/tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/release_tags.html>.
 This endpoint returns the tags of the series that belong to one release.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1252,7 +1252,7 @@ end
 """
     mutable struct MyFredReleaseRelatedTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/release/related_tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_related_tags.html.
+Endpoint model for the FRED `fred/release/related_tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/release_related_tags.html>.
 This endpoint returns the tags that are related to a set of tags, among the series that belong to one release.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1264,7 +1264,7 @@ Every field is at its empty value by default. A field at its empty value (`""`, 
 - `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
   today's date.
 - `tag_names::String`: the tag names that a series must all have, separated by semicolons, e.g., `"sa;foreign"`. FRED
-  requires this field. The returned tags are the tags that these series have in addition.
+  requires this field.
 - `exclude_tag_names::String`: the tag names that a series must not have, separated by semicolons. Set this field together
   with `tag_names`. When the field is empty, FRED does not exclude by tag.
 - `tag_group_id::String`: the group of tags to return: `"freq"` (frequency), `"gen"` (general or concept), `"geo"`
@@ -1321,7 +1321,7 @@ end
 """
     mutable struct MyFredReleaseTablesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/release/tables` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/release_tables.html.
+Endpoint model for the FRED `fred/release/tables` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/release_tables.html>.
 This endpoint returns the elements of the table of one release. Each element is a section or a series of the table, and an element can have children. This endpoint takes no real-time parameters.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1364,7 +1364,7 @@ end
 """
     mutable struct MyFredSourcesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/sources` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/sources.html.
+Endpoint model for the FRED `fred/sources` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/sources.html>.
 This endpoint returns every source of economic data: its identifier, name, and, when FRED has them, its link and notes.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1411,7 +1411,7 @@ end
 """
     mutable struct MyFredSourceEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/source` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/source.html.
+Endpoint model for the FRED `fred/source` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/source.html>.
 This endpoint returns one source of economic data: its identifier, name, and, when FRED has them, its link and notes.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1447,7 +1447,7 @@ end
 """
     mutable struct MyFredSourceReleasesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/source/releases` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/source_releases.html.
+Endpoint model for the FRED `fred/source/releases` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/source_releases.html>.
 This endpoint returns the releases of economic data that one source publishes.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1499,7 +1499,7 @@ end
 """
     mutable struct MyFredTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/tags.html.
+Endpoint model for the FRED `fred/tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/tags.html>.
 This endpoint returns the tags of FRED. A tag is a word that describes a series, e.g., its frequency or its geography.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1560,7 +1560,7 @@ end
 """
     mutable struct MyFredRelatedTagsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/related_tags` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/related_tags.html.
+Endpoint model for the FRED `fred/related_tags` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/related_tags.html>.
 This endpoint returns the other tags that the series matching `tag_names` also carry.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1571,7 +1571,7 @@ Every field is at its empty value by default. A field at its empty value (`""`, 
 - `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
   today's date.
 - `tag_names::String`: the tag names that a series must all have, separated by semicolons, e.g., `"monetary aggregates;weekly"`. FRED
-  requires this field. The returned tags are the tags that these series have in addition.
+  requires this field.
 - `exclude_tag_names::String`: the tag names that a series must not have, separated by semicolons. Set this field together
   with `tag_names`. When the field is empty, FRED does not exclude by tag.
 - `tag_group_id::String`: the group of tags to return: `"freq"` (frequency), `"gen"` (general or concept), `"geo"`
@@ -1625,7 +1625,7 @@ end
 """
     mutable struct MyFredTagsSeriesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/tags/series` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/tags_series.html.
+Endpoint model for the FRED `fred/tags/series` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/tags_series.html>.
 This endpoint returns the series that match every tag in `tag_names`.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1682,7 +1682,7 @@ end
 """
     mutable struct MyFredMapsShapesEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `geofred/shapes/file` endpoint, described at https://fred.stlouisfed.org/docs/api/geofred/shapes.html.
+Endpoint model for the FRED `geofred/shapes/file` endpoint, described at <https://fred.stlouisfed.org/docs/api/geofred/shapes.html>.
 This endpoint returns the boundaries of the regions of one shape type, as a GeoJSON `FeatureCollection`.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1711,7 +1711,7 @@ end
 """
     mutable struct MyFredMapsSeriesGroupEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `geofred/series/group` endpoint, described at https://fred.stlouisfed.org/docs/api/geofred/series_group.html.
+Endpoint model for the FRED `geofred/series/group` endpoint, described at <https://fred.stlouisfed.org/docs/api/geofred/series_group.html>.
 This endpoint returns the meta information of the series group that a regional series belongs to. The response holds the title, the region type, the series group, the season, the units, the frequency, and the first and last dates of the group.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1739,7 +1739,7 @@ end
 """
     mutable struct MyFredMapsSeriesDataEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `geofred/series/data` endpoint, described at https://fred.stlouisfed.org/docs/api/geofred/series_data.html.
+Endpoint model for the FRED `geofred/series/data` endpoint, described at <https://fred.stlouisfed.org/docs/api/geofred/series_data.html>.
 This endpoint returns the regional data of one series, i.e., the value of the series in each region, on one date or over a range of dates.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1774,7 +1774,7 @@ end
 """
     mutable struct MyFredMapsRegionalDataEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `geofred/regional/data` endpoint, described at https://fred.stlouisfed.org/docs/api/geofred/regional_data.html.
+Endpoint model for the FRED `geofred/regional/data` endpoint, described at <https://fred.stlouisfed.org/docs/api/geofred/regional_data.html>.
 This endpoint returns the regional data of one series group, i.e., the value of the group in each region of one region type.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 
@@ -1835,7 +1835,7 @@ end
 """
     mutable struct MyFredV2ReleaseObservationsEndpointModel <: AbstractFredEndpointModel
 
-Endpoint model for the FRED `fred/v2/release/observations` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/v2/release_observations.html.
+Endpoint model for the FRED `fred/v2/release/observations` endpoint, described at <https://fred.stlouisfed.org/docs/api/fred/v2/release_observations.html>.
 This endpoint returns the observations of every series in one release, in pages. FRED version 2 reads the API key from the `Authorization: Bearer` header, so the `api` function moves the key from the URL into that header.
 Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
 

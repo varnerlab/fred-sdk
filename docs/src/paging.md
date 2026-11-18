@@ -1,6 +1,6 @@
 # Paging
 
-FRED returns a list of records one page at a time, and each call to `api` returns one page. Version 1 and version 2 move from one page to the next in different ways.
+Each call to `api` returns one page of records. Version 1 and version 2 move from one page to the next in different ways.
 
 ## Version 1: limit and offset
 

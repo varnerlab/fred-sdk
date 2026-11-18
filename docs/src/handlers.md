@@ -14,7 +14,7 @@ title = result["seriess"][1]["title"];
 
 ## Table handlers
 
-A table handler returns a `DataFrame` with one row for each record of the response, such as each series or each tag. Each table handler reads one kind of record, so one table handler serves every endpoint that returns that kind of record. The response key is the key of the JSON text that holds the records. The `geofred/shapes/file` and `geofred/series/group` endpoints have no table handler.
+A table handler returns a `DataFrame` with one row for each record of the response, such as each series or each tag. Each table handler reads one kind of record, so one table handler serves every endpoint that returns that kind of record. The `geofred/shapes/file` and `geofred/series/group` endpoints have no table handler.
 
 | Handler | Response key | Endpoints |
 |:--- |:--- |:--- |
@@ -32,7 +32,7 @@ A table handler returns a `DataFrame` with one row for each record of the respon
 | [`process_maps_regional_data_response_dataframe`](@ref) | `data`, inside `meta` | `geofred/regional/data` |
 | [`process_release_observations_response_dataframe`](@ref) | `observations`, inside each entry of `series` | `fred/v2/release/observations` |
 
-For a search, `process_search_response_dataframe` returns 6 columns, and `process_series_response_dataframe` returns 10 columns.
+`fred/series/search` works with either handler: `process_search_response_dataframe` returns 6 columns, and `process_series_response_dataframe` returns 10 columns.
 
 ```@docs
 process_search_response_dataframe
