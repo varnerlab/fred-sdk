@@ -25,3 +25,7 @@ end
 @testset "Categories endpoints" begin
     include("test_categories.jl")
 end
+
+@testset "Releases endpoints" begin
+    include("test_releases.jl")
+end

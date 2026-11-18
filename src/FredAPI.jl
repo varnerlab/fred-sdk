@@ -16,6 +16,9 @@ module FredAPI
     export MyFredSeriesVintageDatesEndpointModel
     export MyFredCategoryEndpointModel, MyFredCategoryChildrenEndpointModel, MyFredCategoryRelatedEndpointModel
     export MyFredCategorySeriesEndpointModel, MyFredCategoryTagsEndpointModel, MyFredCategoryRelatedTagsEndpointModel
+    export MyFredReleasesEndpointModel, MyFredReleasesDatesEndpointModel, MyFredReleaseEndpointModel
+    export MyFredReleaseDatesEndpointModel, MyFredReleaseSeriesEndpointModel, MyFredReleaseSourcesEndpointModel
+    export MyFredReleaseTagsEndpointModel, MyFredReleaseRelatedTagsEndpointModel, MyFredReleaseTablesEndpointModel
     export url
 
     # load the package code, in this order -
