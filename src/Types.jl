@@ -105,8 +105,8 @@ Every field is at its empty value by default. A field at its empty value (`""` o
 - `limit::Int64`: the largest number of observations to return, between `1` and `100000`. When the field is `0`, FRED uses
   `100000`.
 - `offset::Int64`: the number of results to skip, starting at `0`. When the field is `0`, FRED skips none.
-- `sort_order::String`: the order of the results: `"asc"` (ascending) or `"desc"` (descending). When the field is empty, FRED
-  uses `"asc"`.
+- `sort_order::String`: the order of the observations by observation date: `"asc"` (ascending) or `"desc"` (descending). When
+  the field is empty, FRED uses `"asc"`.
 - `observation_start::String`: the first observation date that we want, written as `"YYYY-MM-DD"`. When the field is empty,
   FRED uses `"1776-07-04"`, the earliest date that FRED allows.
 - `observation_end::String`: the last observation date that we want, written as `"YYYY-MM-DD"`. When the field is empty, FRED
@@ -121,14 +121,14 @@ Every field is at its empty value by default. A field at its empty value (`""` o
   field, and returns an error when the frequency is higher than the frequency of the series. When the field is empty, FRED
   returns the observations at the frequency of the series.
 - `aggregation_method::String`: the way that FRED combines the observations when it lowers the frequency: `"avg"` (average),
-  `"sum"` (sum), or `"eop"` (end of period). When the field is empty, FRED uses `"avg"`.
+  `"sum"` (sum), or `"eop"` (end of period). FRED uses this field only when `frequency` is set. When the field is empty, FRED
+  uses `"avg"`.
 - `output_type::Int64`: the layout of the observations: `1` (the observations for each real-time period), `2` (all the
   observations for each vintage date), `3` (the new and the revised observations for each vintage date), or `4` (the initial
-  release of the observations only). FRED allows `2`, `3`, and `4` only for series that have vintage dates. When the field is
-  `0`, FRED uses `1`.
+  release of the observations only). When the field is `0`, FRED uses `1`.
 - `vintage_dates::String`: the vintage dates to return, written as comma-separated `"YYYY-MM-DD"` dates, e.g.,
-  `"2024-01-01,2024-06-01"`. FRED returns the data as it stood on each date. When the field is empty, FRED does not select by
-  vintage date.
+  `"2024-01-01,2024-06-01"`. FRED uses these dates in place of `realtime_start` and `realtime_end`. When the field is empty,
+  FRED does not select by vintage date.
 
 ### Constructors
 - `MyFredSeriesObservationsEndpointModel(; apikey::String = "", series_id::String = "", realtime_start::String = "",
@@ -234,10 +234,10 @@ Every field is at its empty value by default. A field at its empty value (`""` o
 - `offset::Int64`: the number of results to skip, starting at `0`. When the field is `0`, FRED skips none.
 - `order_by::String`: the attribute to sort the results by: `"search_rank"`, `"series_id"`, `"title"`, `"units"`,
   `"frequency"`, `"seasonal_adjustment"`, `"realtime_start"`, `"realtime_end"`, `"last_updated"`, `"observation_start"`,
-  `"observation_end"`, `"popularity"`, or `"group_popularity"`. When the field is empty, FRED uses `"search_rank"` for a full
-  text search and `"series_id"` for a series identifier search.
+  `"observation_end"`, `"popularity"`, or `"group_popularity"`. When the field is empty, FRED uses `"search_rank"` when
+  `search_type` is `"full_text"` and `"series_id"` when `search_type` is `"series_id"`.
 - `sort_order::String`: the order of the results: `"asc"` (ascending) or `"desc"` (descending). When the field is empty, FRED
-  uses `"asc"`.
+  uses `"desc"` if `order_by` is `"search_rank"` or `"popularity"`, and `"asc"` otherwise.
 - `filter_variable::String`: the attribute of a series to filter the results by: `"frequency"`, `"units"`, or
   `"seasonal_adjustment"`. Set this field together with `filter_value`. When the field is empty, FRED does not filter.
 - `filter_value::String`: the value of the `filter_variable` attribute to keep, e.g., `"Monthly"` for the frequency or
@@ -485,16 +485,16 @@ Every field is at its empty value by default. A field at its empty value (`""` o
   date.
 - `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
   today's date.
-- `limit::Int64`: the largest number of series to return, between `1` and `100`. When the field is `0`, FRED uses `100`.
+- `limit::Int64`: the largest number of series to return, between `1` and `1000`. When the field is `0`, FRED uses `1000`.
 - `offset::Int64`: the number of results to skip, starting at `0`. When the field is `0`, FRED skips none.
 - `filter_value::String`: the kind of series to return: `"macro"` (macroeconomic series), `"regional"` (regional series), or
   `"all"`. When the field is empty, FRED uses `"all"`.
 - `start_time::String`: the start of the time window for the last update of a series, written as `"YYYYMMDDHhmm"` (year,
-  month, day, hour, minute) in US Eastern time. FRED requires `end_time` when this field is set. When the field is empty,
-  FRED does not filter by time.
+  month, day, hour, minute). FRED requires `end_time` when this field is set. When the field is empty, FRED does not filter
+  by time.
 - `end_time::String`: the end of the time window for the last update of a series, written as `"YYYYMMDDHhmm"` (year, month,
-  day, hour, minute) in US Eastern time. FRED requires `start_time` when this field is set. When the field is empty, FRED
-  does not filter by time.
+  day, hour, minute). FRED requires `start_time` when this field is set. When the field is empty, FRED does not filter by
+  time.
 
 ### Constructors
 - `MyFredSeriesUpdatesEndpointModel(; apikey::String = "", realtime_start::String = "", realtime_end::String = "",
@@ -537,15 +537,15 @@ Every field is at its empty value by default. A field at its empty value (`""` o
 - `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
 - `series_id::String`: the identifier of the series, e.g., `"GNPCA"`. FRED requires this field.
 - `realtime_start::String`: the first day of the real-time period, written as `"YYYY-MM-DD"`. The real-time period selects
-  the vintage of the data that we see, i.e., the data as it stood on those days. When the field is empty, FRED uses today's
-  date.
+  the vintage of the data that we see, i.e., the data as it stood on those days. When the field is empty, FRED uses
+  `"1776-07-04"`.
 - `realtime_end::String`: the last day of the real-time period, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses
-  today's date.
+  `"9999-12-31"`.
 - `limit::Int64`: the largest number of vintage dates to return, between `1` and `10000`. When the field is `0`, FRED uses
   `10000`.
 - `offset::Int64`: the number of results to skip, starting at `0`. When the field is `0`, FRED skips none.
-- `sort_order::String`: the order of the results: `"asc"` (ascending) or `"desc"` (descending). When the field is empty, FRED
-  uses `"asc"`.
+- `sort_order::String`: the order of the vintage dates: `"asc"` (ascending) or `"desc"` (descending). When the field is
+  empty, FRED uses `"asc"`.
 
 ### Constructors
 - `MyFredSeriesVintageDatesEndpointModel(; apikey::String = "", series_id::String = "", realtime_start::String = "",
