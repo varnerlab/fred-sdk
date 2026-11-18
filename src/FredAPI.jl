@@ -21,6 +21,8 @@ module FredAPI
     export MyFredReleaseTagsEndpointModel, MyFredReleaseRelatedTagsEndpointModel, MyFredReleaseTablesEndpointModel
     export MyFredSourcesEndpointModel, MyFredSourceEndpointModel, MyFredSourceReleasesEndpointModel
     export MyFredTagsEndpointModel, MyFredRelatedTagsEndpointModel, MyFredTagsSeriesEndpointModel
+    export MyFredMapsShapesEndpointModel, MyFredMapsSeriesGroupEndpointModel, MyFredMapsSeriesDataEndpointModel
+    export MyFredMapsRegionalDataEndpointModel, MyFredV2ReleaseObservationsEndpointModel
     export url
 
     # load the package code, in this order -

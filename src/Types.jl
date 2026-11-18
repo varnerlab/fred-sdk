@@ -1676,3 +1676,194 @@ mutable struct MyFredTagsSeriesEndpointModel <: AbstractFredEndpointModel
         sort_order::String = "") = new(
             apikey, tag_names, exclude_tag_names, realtime_start, realtime_end, limit, offset, order_by, sort_order);
 end
+
+# --- MAPS API ENDPOINTS --------------------------------------------------------------------------------------- #
+
+"""
+    mutable struct MyFredMapsShapesEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `geofred/shapes/file` endpoint, described at https://fred.stlouisfed.org/docs/api/geofred/shapes.html.
+This endpoint returns the boundaries of the regions of one shape type, as a GeoJSON `FeatureCollection`.
+Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `shape::String`: the type of region to return the boundaries of: `"bea"`, `"msa"`, `"frb"`, `"necta"`, `"state"`,
+  `"country"`, `"county"`, `"censusregion"`, or `"censusdivision"`. FRED requires this field.
+
+### Constructors
+- `MyFredMapsShapesEndpointModel(; apikey::String = "", shape::String = "")`: returns a new `MyFredMapsShapesEndpointModel`
+  instance. Every argument is a keyword argument.
+"""
+mutable struct MyFredMapsShapesEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    shape::String
+
+    # methods -
+    MyFredMapsShapesEndpointModel(;
+        apikey::String = "",
+        shape::String = "") = new(
+            apikey, shape);
+end
+
+"""
+    mutable struct MyFredMapsSeriesGroupEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `geofred/series/group` endpoint, described at https://fred.stlouisfed.org/docs/api/geofred/series_group.html.
+This endpoint returns the meta information of the series group that a regional series belongs to. The response holds the title, the region type, the series group, the season, the units, the frequency, and the first and last dates of the group.
+Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `series_id::String`: the identifier of a FRED series that has regional data, e.g., `"SMU56000000500000001a"`. FRED requires this field.
+
+### Constructors
+- `MyFredMapsSeriesGroupEndpointModel(; apikey::String = "", series_id::String = "")`: returns a new
+  `MyFredMapsSeriesGroupEndpointModel` instance. Every argument is a keyword argument.
+"""
+mutable struct MyFredMapsSeriesGroupEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    series_id::String
+
+    # methods -
+    MyFredMapsSeriesGroupEndpointModel(;
+        apikey::String = "",
+        series_id::String = "") = new(
+            apikey, series_id);
+end
+
+"""
+    mutable struct MyFredMapsSeriesDataEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `geofred/series/data` endpoint, described at https://fred.stlouisfed.org/docs/api/geofred/series_data.html.
+This endpoint returns the regional data of one series, i.e., the value of the series in each region, on one date or over a range of dates.
+Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `series_id::String`: the identifier of a FRED series that has regional data, e.g., `"WIPCPI"`. FRED requires this field.
+- `date::String`: the date of the data, written as `"YYYY-MM-DD"`. When the field is empty, FRED uses the most recent date.
+- `start_date::String`: the first date of a range of dates, written as `"YYYY-MM-DD"`. Set this field together with `date`,
+  which then holds the last date of the range. When the field is empty, FRED returns the data of one date.
+
+### Constructors
+- `MyFredMapsSeriesDataEndpointModel(; apikey::String = "", series_id::String = "", date::String = "",
+  start_date::String = "")`: returns a new `MyFredMapsSeriesDataEndpointModel` instance. Every argument is a keyword argument.
+"""
+mutable struct MyFredMapsSeriesDataEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    series_id::String
+    date::String
+    start_date::String
+
+    # methods -
+    MyFredMapsSeriesDataEndpointModel(;
+        apikey::String = "",
+        series_id::String = "",
+        date::String = "",
+        start_date::String = "") = new(
+            apikey, series_id, date, start_date);
+end
+
+"""
+    mutable struct MyFredMapsRegionalDataEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `geofred/regional/data` endpoint, described at https://fred.stlouisfed.org/docs/api/geofred/regional_data.html.
+This endpoint returns the regional data of one series group, i.e., the value of the group in each region of one region type.
+Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `series_group::String`: the identifier of the series group, e.g., `"882"`. FRED requires this field.
+- `region_type::String`: the type of region: `"bea"`, `"msa"`, `"frb"`, `"necta"`, `"state"`, `"country"`, `"county"`, or
+  `"censusregion"`. FRED requires this field.
+- `date::String`: the date of the data, written as `"YYYY-MM-DD"`. FRED requires this field.
+- `start_date::String`: the first date of a range of dates, written as `"YYYY-MM-DD"`. Set this field together with `date`,
+  which then holds the last date of the range. When the field is empty, FRED returns the data of one date.
+- `season::String`: the seasonal adjustment of the data: `"SA"`, `"NSA"`, `"SSA"`, `"SAAR"`, or `"NSAAR"`. FRED requires this field.
+- `units::String`: the units of the data as text, e.g., `"Dollars"`. FRED requires this field.
+- `transformation::String`: the transformation of the data: `"lin"` (levels), `"chg"`, `"ch1"`, `"pch"`, `"pc1"`, `"pca"`,
+  `"cch"`, `"cca"`, or `"log"`. When the field is empty, FRED uses `"lin"`.
+- `frequency::String`: the frequency of the data: `"d"`, `"w"`, `"bw"`, `"m"`, `"q"`, `"sa"`, `"a"`, `"wef"`, `"weth"`,
+  `"wew"`, `"wetu"`, `"wem"`, `"wesu"`, `"wesa"`, `"bwew"`, or `"bwem"`.
+- `aggregation_method::String`: how FRED aggregates the data when it lowers the frequency: `"avg"` (average), `"sum"`, or
+  `"eop"` (end of period). When the field is empty, FRED uses `"avg"`.
+
+### Constructors
+- `MyFredMapsRegionalDataEndpointModel(; apikey::String = "", series_group::String = "", region_type::String = "",
+  date::String = "", start_date::String = "", season::String = "", units::String = "", transformation::String = "",
+  frequency::String = "", aggregation_method::String = "")`: returns a new `MyFredMapsRegionalDataEndpointModel` instance.
+  Every argument is a keyword argument.
+"""
+mutable struct MyFredMapsRegionalDataEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    series_group::String
+    region_type::String
+    date::String
+    start_date::String
+    season::String
+    units::String
+    transformation::String
+    frequency::String
+    aggregation_method::String
+
+    # methods -
+    MyFredMapsRegionalDataEndpointModel(;
+        apikey::String = "",
+        series_group::String = "",
+        region_type::String = "",
+        date::String = "",
+        start_date::String = "",
+        season::String = "",
+        units::String = "",
+        transformation::String = "",
+        frequency::String = "",
+        aggregation_method::String = "") = new(
+            apikey, series_group, region_type, date, start_date, season, units, transformation, frequency, aggregation_method);
+end
+
+# --- VERSION 2 ENDPOINTS -------------------------------------------------------------------------------------- #
+
+"""
+    mutable struct MyFredV2ReleaseObservationsEndpointModel <: AbstractFredEndpointModel
+
+Endpoint model for the FRED `fred/v2/release/observations` endpoint, described at https://fred.stlouisfed.org/docs/api/fred/v2/release_observations.html.
+This endpoint returns the observations of every series in one release, in pages. FRED version 2 reads the API key from the `Authorization: Bearer` header, so the `api` function moves the key from the URL into that header.
+Every field is at its empty value by default. A field at its empty value (`""`, `0`, or `false`) stays out of the URL, so FRED applies its own default for that field.
+
+### Fields
+- `apikey::String`: the FRED API key of the client, a 32 character string of lowercase letters and digits.
+- `release_id::Int64`: the identifier of the release. FRED requires this field.
+- `limit::Int64`: the largest number of observations to return, between `1` and `500000`. When the field is `0`, FRED uses `500000`.
+- `next_cursor::String`: the `next_cursor` value of the previous response, which selects the next page of observations.
+  Leave the field empty on the first request.
+
+### Constructors
+- `MyFredV2ReleaseObservationsEndpointModel(; apikey::String = "", release_id::Int64 = 0, limit::Int64 = 0,
+  next_cursor::String = "")`: returns a new `MyFredV2ReleaseObservationsEndpointModel` instance. Every argument is a
+  keyword argument.
+"""
+mutable struct MyFredV2ReleaseObservationsEndpointModel <: AbstractFredEndpointModel
+
+    # data -
+    apikey::String
+    release_id::Int64
+    limit::Int64
+    next_cursor::String
+
+    # methods -
+    MyFredV2ReleaseObservationsEndpointModel(;
+        apikey::String = "",
+        release_id::Int64 = 0,
+        limit::Int64 = 0,
+        next_cursor::String = "") = new(
+            apikey, release_id, limit, next_cursor);
+end

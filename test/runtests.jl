@@ -1,4 +1,5 @@
 using Test
+using InteractiveUtils
 using FredAPI
 
 # the test key (the demo key of FRED) and the base URL, shared by every test file -
@@ -32,4 +33,8 @@ end
 
 @testset "Sources and tags endpoints" begin
     include("test_sources_tags.jl")
+end
+
+@testset "Maps and version 2 endpoints" begin
+    include("test_maps_v2.jl")
 end
